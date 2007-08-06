@@ -12,7 +12,7 @@ public class TaxonomyTreeController
 
     private TaxonomyTreeUI _ui;
 
-    private TaxonMetadataController _taxonController;
+    private TaxonController _taxonController;
 
     private StatusBarController _statusBarController;
 
@@ -25,7 +25,7 @@ public class TaxonomyTreeController
      * <code>StatusBarController</code>.
      */
     public TaxonomyTreeController( TaxonomyTreeUI      ui, 
-                                   TaxonMetadataController     taxonController,
+                                   TaxonController     taxonController,
                                    StatusBarController statusBarController )
     {
         _ui                = ui;

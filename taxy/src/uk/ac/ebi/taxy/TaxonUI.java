@@ -12,37 +12,43 @@ import java.awt.*;
  * a <code>TaxonProxy</code>.
  */
 @SuppressWarnings("serial")
-public class TaxonMetadataUI
+public class TaxonUI
     extends JPanel
 {
-    private static final int FIELD_HIGHT = 20;
+    /////////////////////////////
+    // Private Attributes
+    /////////////////////////////
 
-	private TaxonMetadataController _controller;
+    private TaxonController _controller;
 
     /**
      * Container that lays out the taxon's properties.
      */
     private Box _mainBox;
 
+    //////////////////////////////
+    // Public Operations
+    //////////////////////////////
+
     /** Constructs a new empty UI.
      */
-    public TaxonMetadataUI()
+    public TaxonUI()
     {
-        compose();
+        this.compose();
 
-        _controller = new TaxonMetadataController( this );
+        _controller = new TaxonController( this );
     }
 
     /** Gets the controller.
      */
-    public TaxonMetadataController getController()
+    public TaxonController getController()
     {
         return _controller;
     }
 
     /**
      * Overrides the setEnabled operation. It is required for
-     * disabling properly the UI components contained within
+     * disabling properly the UI components contained whinin
      * this class.
      */
     public void setEnabled( boolean enabled )
@@ -97,11 +103,12 @@ public class TaxonMetadataUI
     private Box createTaxonBox( TaxonProxy taxon )
     {
         Box box = Box.createVerticalBox();
-        
+
         box.add( Box.createVerticalStrut( 20 ) );
 
-        box.add( newScalarField( "Identifier", taxon.getID()) );
-        box.add( newScalarField( "Name", taxon.getName()) );
+        box.add( new JLabel( "<html>Identifier: <b>" + taxon.getID() + "</b></html>" ) );
+
+        box.add( new JLabel( "Name      : " + taxon.getName() ) );
 
         box.add( Box.createVerticalStrut( 10 ) );
 
@@ -116,8 +123,8 @@ public class TaxonMetadataUI
             String scalar = p.getScalar();
 
             if( scalar != null )
-            {            	
-            	box.add( newScalarField(name, scalar));
+            {
+                box.add( new JLabel( name + ": " + scalar ) );
             }
             else
             {
@@ -145,11 +152,6 @@ public class TaxonMetadataUI
         return box;
     }
 
-	private JComponent newScalarField(String name, String value) {
-		
-		return new JLabel("<html><b>" + name + "</b>: " + value + "</html>");
-	}
-
 
     /**
      * Composes UI components.
@@ -160,9 +162,9 @@ public class TaxonMetadataUI
         _mainBox = Box.createVerticalBox();
 
         // this container initialization
-        setLayout( new BorderLayout( 0, 1 ) );
-        add( new JLabel( "Element Details" ), BorderLayout.NORTH );
-        add( _mainBox );
+        this.setLayout( new BorderLayout( 0, 1 ) );
+        this.add( new JLabel( "Taxon Description" ), BorderLayout.NORTH );
+        this.add( _mainBox );
     }
 }
 

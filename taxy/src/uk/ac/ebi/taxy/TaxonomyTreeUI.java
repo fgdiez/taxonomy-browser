@@ -43,7 +43,7 @@ public class TaxonomyTreeUI
      *                            write the lineage of the currently 
      *                            selected taxon.
      */
-    public TaxonomyTreeUI( TaxonMetadataController selectedTaxonController,
+    public TaxonomyTreeUI( TaxonController selectedTaxonController,
                            StatusBarController statusBarController )
     {
         compose();

@@ -16,7 +16,7 @@ public class SearchController
 
     private SearchResultController _resultController;
 
-    private TaxyController _browserController;
+    private BrowserController _browserController;
 
     ///////////////////////
     // Public Operations
@@ -27,7 +27,7 @@ public class SearchController
      * <code>BrowserController</code>.
      */
     public SearchController( SearchResultController resultController,
-                             TaxyController browserController )
+                             BrowserController browserController )
     {
         _resultController = resultController;
         _browserController = browserController;

@@ -1,16 +1,10 @@
 package uk.ac.ebi.taxy;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-
 import uk.ac.ebi.util.Debug;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 
 
@@ -18,23 +12,27 @@ import uk.ac.ebi.util.Debug;
 /**
  * Main UI for searching and navigating taxonomy information.
  *
- * @see uk.ac.ebi.taxy.TaxyController
+ * @see uk.ac.ebi.taxy.BrowserController
  */
-@SuppressWarnings("serial")
-public class TaxyUI extends JFrame
+public class BrowserUI extends JFrame
 {
+    /////////////////////////
+    // Private Constants
+    /////////////////////////
+
     /**
      * % of screen size which the application will cover initilialy.
      */
     private final double SCREEN_FACTOR = 0.9;
 
-    /**
-     * This UI controller
-     */
-    private TaxyController _controller;
+    /////////////////////////
+    // Private Attributes
+    /////////////////////////
+
+    private BrowserController _controller;
 
     /**
-     * UI component for searching taxonomy elements.
+     * UI component for searching taxa info.
      */
     private SearchUI _searchUI;
 
@@ -51,7 +49,7 @@ public class TaxyUI extends JFrame
     /**
      * UI component for displaying the complete information of a selected taxon.
      */
-    private TaxonMetadataUI _taxonUI;
+    private TaxonUI _taxonUI;
 
     /**
      * Application's status bar.
@@ -103,8 +101,7 @@ public class TaxyUI extends JFrame
         Debug.setEnabled( true );
         Debug.TRACE( "Debug is on" );
         System.err.println("initiating browserui");
-
-        TaxyUI application = new TaxyUI();
+        BrowserUI application = new BrowserUI();
 
         Debug.registerExitCallback( application.getController() );
 
@@ -121,11 +118,11 @@ public class TaxyUI extends JFrame
     /**
      * Constructs a new taxonomy browser.
      */
-    public TaxyUI()
+    public BrowserUI()
     {
         _statusBar = new StatusBarUI( "" );
 
-        _taxonUI = new TaxonMetadataUI();
+        _taxonUI = new TaxonUI();
 
         _taxaTreeUI = new TaxonomyTreeUI( _taxonUI.getController(),
                                          _statusBar.getController() );
@@ -134,7 +131,7 @@ public class TaxyUI extends JFrame
                                               _taxonUI.getController(),
                                               _statusBar.getController() );
 
-        _controller = new TaxyController( this,
+        _controller = new BrowserController( this,
                                              _taxaTreeUI.getController() );
 
         addWindowListener( new MyWindowListener( _controller ) );
@@ -153,7 +150,7 @@ public class TaxyUI extends JFrame
 
     /** Gets this UI's controller.
      */
-    public TaxyController getController()
+    public BrowserController getController()
     {
         return _controller;
     }
@@ -289,7 +286,7 @@ public class TaxyUI extends JFrame
         _rightPane =
             new JSplitPane( JSplitPane.HORIZONTAL_SPLIT,
                             _leftPane,
-                            new JScrollPane(_taxonUI) );
+                            _taxonUI );
 
         _topPane =
             new JSplitPane( JSplitPane.VERTICAL_SPLIT,
@@ -341,10 +338,10 @@ public class TaxyUI extends JFrame
  */
 class MyWindowListener extends java.awt.event.WindowAdapter
 {
-    private TaxyController _controller;
+    private BrowserController _controller;
 
     /** Constructs a new window events listener */
-    public MyWindowListener( TaxyController controller )
+    public MyWindowListener( BrowserController controller )
     {
         _controller = controller;
     }

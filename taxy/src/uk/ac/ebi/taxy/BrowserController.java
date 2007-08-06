@@ -1,6 +1,5 @@
 package uk.ac.ebi.taxy;
 
-import java.awt.Cursor;
 import java.util.ArrayList;
 
 import uk.ac.ebi.util.Debug;
@@ -9,21 +8,30 @@ import uk.ac.ebi.util.Debug;
 /**
  * This class is the controller for <code>BrowserUI</code>.
  *
- * @see uk.ac.ebi.taxy.TaxyUI
+ * @see uk.ac.ebi.taxy.BrowserUI
  */
-public class TaxyController
+public class BrowserController
 {
-    private TaxyUI _ui;
+    //////////////////////////
+    // Private Attributes
+    //////////////////////////
+
+    private BrowserUI _ui;
 
     private TaxonomyPlugin _taxonomyPlugin;
 
     private TaxonomyTreeController _treeController;
 
 
+    //////////////////////////
+    // Public Operations
+    //////////////////////////
+
     /** Constructs a new controller that will operate over the specified
      * <code>BrowserUI</code> and <code>TaxonomyTreeController</code>.
      */
-    public TaxyController( TaxyUI ui, TaxonomyTreeController treeController )
+    public BrowserController( BrowserUI ui,
+                              TaxonomyTreeController treeController )
     {
         _ui = ui;
 
@@ -122,14 +130,11 @@ public class TaxyController
         if( plugin != null )
         {
             _ui.setEnabled( false );
-            Cursor currentCursor = _ui.getCursor();
-            _ui.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
             if( plugin.connect() )
             {
                 initializeViews( plugin );
             }
-            _ui.setCursor(currentCursor);
             _ui.setEnabled( true );
         }
         else {

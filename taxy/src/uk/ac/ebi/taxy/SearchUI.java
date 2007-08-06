@@ -53,7 +53,7 @@ public class SearchUI extends JPanel implements ActionListener
      * <code>BrowserController</code>.
      */
     public SearchUI( SearchResultController resultController,
-                     TaxyController browserController )
+                     BrowserController browserController )
     {
         // compose graphycal elements
         compose();

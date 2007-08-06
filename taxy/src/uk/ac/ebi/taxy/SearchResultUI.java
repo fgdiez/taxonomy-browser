@@ -41,7 +41,7 @@ public class SearchResultUI
      * <code>TaxonController</code> and <code>StatusBarController</code>.
      */
     public SearchResultUI( TaxonomyTreeController lineageController,
-                           TaxonMetadataController   taxonController,
+                           TaxonController   taxonController,
                            StatusBarController statusBarController )
     {
         _controller = new SearchResultController( this, 

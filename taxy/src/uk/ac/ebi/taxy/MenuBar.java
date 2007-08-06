@@ -1,18 +1,14 @@
 package uk.ac.ebi.taxy;
 
 
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JEditorPane;
-import javax.swing.JMenu;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
+
+import java.awt.event.*;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 
@@ -20,14 +16,13 @@ import javax.swing.event.HyperlinkEvent;
  * This class defines the application's menus. This class creates the
  * application's menu bar with all the menu items.
  */
-@SuppressWarnings("serial")
 public class MenuBar extends javax.swing.JMenuBar
 {
     /////////////////////////////
     // Private Attributes
     /////////////////////////////
 
-    private TaxyController _controller;
+    private BrowserController _controller;
 
     /////////////////////////////
     // Public Operations
@@ -37,7 +32,7 @@ public class MenuBar extends javax.swing.JMenuBar
      * Contructs a new menu bar that will operate over the specified
      * <code>BrowserController</code>.
      */
-    public MenuBar( TaxyController controller )
+    public MenuBar( BrowserController controller )
     {
         super();
 
@@ -64,9 +59,9 @@ public class MenuBar extends javax.swing.JMenuBar
     public class ConnectionAction extends AbstractAction
     {
 
-        private TaxyController _controller;
+        private BrowserController _controller;
 
-        public ConnectionAction( TaxyController controller )
+        public ConnectionAction( BrowserController controller )
         {
             super( "Connect" );
 
@@ -91,9 +86,9 @@ public class MenuBar extends javax.swing.JMenuBar
     public class DisconnectionAction extends AbstractAction
     {
 
-        private TaxyController _controller;
+        private BrowserController _controller;
 
-        public DisconnectionAction( TaxyController controller )
+        public DisconnectionAction( BrowserController controller )
         {
             super( "Disconnect" );
 
@@ -117,9 +112,9 @@ public class MenuBar extends javax.swing.JMenuBar
      */
     public class ExitAction extends AbstractAction
     {
-        private TaxyController _controller;
+        private BrowserController _controller;
 
-        public ExitAction( TaxyController controller )
+        public ExitAction( BrowserController controller )
         {
             super( "Exit" );
 
@@ -238,16 +233,6 @@ public class MenuBar extends javax.swing.JMenuBar
         public void hyperlinkUpdate( HyperlinkEvent e) {
 
             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-            	
-            	try {
-					Desktop.getDesktop().browse(e.getURL().toURI());
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (URISyntaxException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 //                try {
 //                    Desktop.getDesktop().browse( new URI(e.getURL().toString()));
 //                }

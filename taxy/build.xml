@@ -30,7 +30,7 @@
 	<target name="launch"
           description="Launch Taxy" >
 
-		<java classname="uk.ac.ebi.taxy.TaxyUI" fork="true" dir="${release}"
+		<java classname="uk.ac.ebi.taxy.BrowserUI" fork="true" dir="${release}"
             maxmemory="200M" >
 			<arg line="${args}" />
 			<classpath >

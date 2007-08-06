@@ -3,14 +3,14 @@ package uk.ac.ebi.taxy;
 import uk.ac.ebi.util.Debug;
 
 /** This class is the controller for <code>TaxonUI</code>.
- * @see uk.ac.ebi.taxy.TaxonMetadataUI
+ * @see uk.ac.ebi.taxy.TaxonUI
  */
-public class TaxonMetadataController
+public class TaxonController
 {
     ///////////////////////////////
     // Private Attributes
     ///////////////////////////////
-    private TaxonMetadataUI _ui;
+    private TaxonUI _ui;
 
     ///////////////////////////////
     // Public Operations
@@ -18,7 +18,7 @@ public class TaxonMetadataController
 
     /** Constructs a new controller for the specified UI.
      */
-    public TaxonMetadataController( TaxonMetadataUI ui)
+    public TaxonController( TaxonUI ui)
     {
         _ui = ui;
     }

@@ -16,7 +16,7 @@ public class SearchResultController
     
     private TaxonomyTreeController _taxonomyTreeController;
 
-    private TaxonMetadataController _taxonController;
+    private TaxonController _taxonController;
 
     private StatusBarController _statusBarController;
 
@@ -31,7 +31,7 @@ public class SearchResultController
      */
     public SearchResultController( SearchResultUI ui, 
                                    TaxonomyTreeController lineageController,
-                                   TaxonMetadataController taxonController,
+                                   TaxonController taxonController,
                                    StatusBarController statusBarController )
     {
         _ui = ui;
