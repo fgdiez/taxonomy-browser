@@ -11,7 +11,6 @@
 	<property name="src"     location="src" />
 	<property name="build"   location="build" />
 	<property name="release" location="release" />
-	<property name="acgt.dir" location="../RepoServices"/>
 
 
 	<!-- project targets +++++++++++++++++++++++++++++++++++++++++++++-->
@@ -81,34 +80,10 @@
 		<javac srcdir="${src}" destdir="${build}" debug="on" deprecation="on"
              includes="org/eu_acgt/**/*.java" >
 			<classpath >
-				<fileset dir="${acgt.dir}/lib" includes="**/*.jar"/>
-				<path path="${acgt.dir}/build/client/bin"/>
-				<path path="${acgt.dir}/build/shared/bin"/>
+				<fileset dir="lib" includes="**/*.jar"/>
 			</classpath>
 
 		</javac>
-	</target>
-
-	<target name="build.ncbi_ff"
-          depends="compile.ncbi_ff"
-          description="Creates Plug-ins jar files" >
-
-		<tstamp/>
-		<jar jarfile="${build}/ncbiPlugin.jar" basedir="${build}"
-           includes="uk/ac/ebi/taxy/plugin/*,
-                     uk/ac/ebi/taxy/plugin/ncbi_ff/*" />
-	</target>
-
-
-	<target name="compile.ncbi_ff"
-          depends="build.core"
-          description="Compiles plugins" >
-
-		<tstamp/>
-		<javac srcdir="${src}" destdir="${build}" debug="on" deprecation="on"
-             classpath="${build}/taxy.jar"
-             includes="uk/ac/ebi/taxy/plugin/*.java,
-                       uk/ac/ebi/taxy/plugin/ncbi_ff/*.java" />
 	</target>
 
 
