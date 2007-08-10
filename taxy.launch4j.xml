@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>release/lib/taxy.jar</jar>
-  <outfile>release/taxy.exe</outfile>
+  <jar>release\lib\taxy.jar</jar>
+  <outfile>release\taxy.exe</outfile>
   <errTitle>Taxy execution error</errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -11,7 +11,7 @@
   <supportUrl></supportUrl>
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
-  <icon>icons/taxy.ico</icon>
+  <icon>icons\taxy.ico</icon>
   <classPath>
     <mainClass>uk.ac.ebi.taxy.TaxyUI</mainClass>
     <cp>lib/axiom-api-1.2.4.jar</cp>
