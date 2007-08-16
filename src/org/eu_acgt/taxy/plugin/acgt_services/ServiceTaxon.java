@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 
 import org.eu_acgt.repo.model.Operation;
 import org.eu_acgt.repo.model.Service;
+import org.eu_acgt.repo.model.ServiceLocation;
 
 import uk.ac.ebi.taxy.TaxonProperty;
 import uk.ac.ebi.taxy.TaxonProxy;
@@ -17,15 +18,6 @@ import uk.ac.ebi.util.Table;
 
 public class ServiceTaxon extends TaxonProxy {
 
-//    long id;
-//    String name;
-//    String description;
-//    String help;
-//    String author;
-//    String authority;
-//    String lsid;
-//    Timestamp created;
-//    List<Operation> operations = new ArrayList<Operation>();
 //    Set<ServiceLocation> serviceLocations = new HashSet<ServiceLocation>();
 //    Set<ServiceQualityInstance> serviceQualities = new HashSet<ServiceQualityInstance>();
 //    Set<FunctionalCategory> functionalCategories = new HashSet<FunctionalCategory>();
@@ -36,23 +28,28 @@ public class ServiceTaxon extends TaxonProxy {
     static final String PROP_HELP = "help";
     static final String PROP_CREATED = "created";
     static final String PROP_OPERATIONS = "operations";
+	static final String PROP_LOCATION = "Location";
 
     static final String OPER_ID = "OperationID";
     static final String OPER_NAME = "OperationName";
     static final String OPER_DESC = "Description";
     static final String OPER_HELP = "OperationHelp";
     static final String OPER_NUM_PARAMS = "#Params";
-    static ImageIcon ICON;
+
+	static final String LOCATION_URI = "EndPointURI";
+	static final String LOCATION_STATUS = "Status";
+	static ImageIcon ICON;
 
     public static final ArrayList<String> propertyNames = new ArrayList<String>(3);
     static {
+//      propertyNames.add( PROP_LSID);
         propertyNames.add( PROP_DESC);
-        propertyNames.add( PROP_LSID);
+        propertyNames.add( PROP_HELP);
         propertyNames.add( PROP_AUTHOR);
         propertyNames.add( PROP_AUTHORITY);
-        propertyNames.add( PROP_HELP);
         propertyNames.add( PROP_CREATED);
         propertyNames.add( PROP_OPERATIONS);
+        propertyNames.add( PROP_LOCATION);
     }
 
     final Service svc;
@@ -109,6 +106,23 @@ public class ServiceTaxon extends TaxonProxy {
         	}
         	Table operTable = new Table(columnNames, rows);
         	return new TaxonProperty(PROP_OPERATIONS, operTable);
+        }
+        else if( propertyName.equals(PROP_LOCATION)) {
+        	Vector<String> columnNames = new Vector<String>();
+        	columnNames.add(LOCATION_URI);
+        	columnNames.add(LOCATION_STATUS);
+        	String[][] rows = new String[svc.getServiceLocations().size()][columnNames.size()];
+        	int i=0;
+        	for(Iterator<ServiceLocation> locationIter = svc.getServiceLocations().iterator(); 
+        	    locationIter.hasNext();) {
+        		ServiceLocation location = locationIter.next();
+        		int j=0;
+        		rows[i][j++] = location.getEndpointUri();
+        		rows[i][j++] = location.getServiceStatus();
+        		i++;
+        	}
+        	Table operTable = new Table(columnNames, rows);
+        	return new TaxonProperty(PROP_LOCATION, operTable);
         }
         return null;
     }

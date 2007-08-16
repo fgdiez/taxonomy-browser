@@ -319,7 +319,7 @@ public class TaxyUI extends JFrame
         // lay out the dividers
         int leftDivider = (int)(dim.width * 0.2);
 
-        int rightDivider = (int)(dim.width * 0.7);
+        int rightDivider = (int)(dim.width * 0.5);
 
         //int bottomDivider = (int)(dim.width * 0.6);
 

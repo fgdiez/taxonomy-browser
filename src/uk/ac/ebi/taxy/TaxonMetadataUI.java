@@ -4,6 +4,7 @@ import uk.ac.ebi.util.*;
 
 import javax.swing.*;
 import java.util.*;
+import java.util.logging.Logger;
 import java.awt.*;
 
 
@@ -15,8 +16,7 @@ import java.awt.*;
 public class TaxonMetadataUI
     extends JPanel
 {
-    private static final int FIELD_HIGHT = 20;
-
+	Logger logger = Logger.getLogger("TaxonMetadataUI");
 	private TaxonMetadataController _controller;
 
     /**
@@ -62,12 +62,10 @@ public class TaxonMetadataUI
      */
     public void showProperties( TaxonProxy taxon )
     {
-        Box box = createTaxonBox( taxon );
+        Component box = createTaxonBox( taxon );
 
-        _mainBox.removeAll();
-        _mainBox.add( box );
-        _mainBox.add(Box.createHorizontalStrut( 20));
-        _mainBox.revalidate();
+        removeAll();
+        add(box);
 
         revalidate();
         this.repaint();
@@ -83,9 +81,6 @@ public class TaxonMetadataUI
         revalidate();
     }
 
-    ////////////////////////////
-    // Private Operations
-    ////////////////////////////
 
     /**
      * Creates a Box that contains the visual information of the given
@@ -94,14 +89,14 @@ public class TaxonMetadataUI
      * @param taxon
      * @return
      */
-    private Box createTaxonBox( TaxonProxy taxon )
+    private Component createTaxonBox( TaxonProxy taxon )
     {
         Box box = Box.createVerticalBox();
         
         box.add( Box.createVerticalStrut( 20 ) );
 
-        box.add( newScalarField( "Identifier", taxon.getID()) );
-        box.add( newScalarField( "Name", taxon.getName()) );
+        box.add( createScalarView( "Identifier", taxon.getID()) );
+        box.add( createScalarView( "Name", taxon.getName()) );
 
         box.add( Box.createVerticalStrut( 10 ) );
 
@@ -116,8 +111,9 @@ public class TaxonMetadataUI
             String scalar = p.getScalar();
 
             if( scalar != null )
-            {            	
-            	box.add( newScalarField(name, scalar));
+            {     
+            	Box scalarContainer = createScalarView(name, scalar);
+            	box.add(scalarContainer);
             }
             else
             {
@@ -128,16 +124,18 @@ public class TaxonMetadataUI
 
                 box.add( Box.createVerticalStrut( 10 ) );
 
-                box.add( new JLabel( name + ": " ) );
-
                 JTable table = tableProperty.getJTable();
+                table.setCellSelectionEnabled(true);
+                
+                int cellHeight = table.getCellRect(0, 0, true).height;
+                logger.info("Cell heigth: " + cellHeight);
+				table.setPreferredScrollableViewportSize(new Dimension(table.getMaximumSize().width, cellHeight));
 
-                table.setRowSelectionAllowed( false );
-
-                JScrollPane tablePane = new JScrollPane( table );
-
+				JScrollPane tablePane = new JScrollPane(table); 
+                tablePane.setBorder(BorderFactory.createTitledBorder(p.getName()));
+                tablePane.setMaximumSize(new Dimension(tablePane.getMaximumSize().width, cellHeight + 50));
+                
                 box.add( tablePane );
-
                 box.add( Box.createVerticalStrut( 10 ) );
             }
         }
@@ -145,10 +143,23 @@ public class TaxonMetadataUI
         return box;
     }
 
-	private JComponent newScalarField(String name, String value) {
+	private Box createScalarView(String name, String scalar) {
+		Box scalarContainer = Box.createHorizontalBox();
 		
-		return new JLabel("<html><b>" + name + "</b>: " + value + "</html>");
+		JTextField textField = new JTextField(scalar);
+		textField.setEditable(false);
+		textField.setBackground(Color.WHITE);
+		textField.setMaximumSize(new Dimension(textField.getMaximumSize().width, 25));
+		
+		JLabel textLabel = new JLabel(name, JLabel.TRAILING);
+		textLabel.setLabelFor(textField);
+				
+		scalarContainer.add( textLabel);
+		scalarContainer.add(new Box.Filler(new Dimension(5,5), new Dimension(10,5), new Dimension(30,5)));
+		scalarContainer.add(textField);
+		return scalarContainer;
 	}
+
 
 
     /**

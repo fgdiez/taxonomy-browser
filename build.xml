@@ -26,7 +26,7 @@
 	</target>
 
 
-	<target name="launch"
+	<target name="launch" depends="release"
           description="Launch Taxy" >
 
 		<java classname="uk.ac.ebi.taxy.TaxyUI" fork="true" dir="${release}"
