@@ -21,8 +21,9 @@ public class ServiceTaxon extends TaxonProxy {
 //    Set<ServiceLocation> serviceLocations = new HashSet<ServiceLocation>();
 //    Set<ServiceQualityInstance> serviceQualities = new HashSet<ServiceQualityInstance>();
 //    Set<FunctionalCategory> functionalCategories = new HashSet<FunctionalCategory>();
+    static final String PROP_LSID = "ID";
+    static final String PROP_NAME = "Name";
     static final String PROP_DESC = "description";
-    static final String PROP_LSID = "lsid";
     static final String PROP_AUTHOR = "author";
     static final String PROP_AUTHORITY = "authority";
     static final String PROP_HELP = "help";
@@ -30,10 +31,10 @@ public class ServiceTaxon extends TaxonProxy {
     static final String PROP_OPERATIONS = "operations";
 	static final String PROP_LOCATION = "Location";
 
-    static final String OPER_ID = "OperationID";
-    static final String OPER_NAME = "OperationName";
+    static final String OPER_ID = "ID";
+    static final String OPER_NAME = "Name";
     static final String OPER_DESC = "Description";
-    static final String OPER_HELP = "OperationHelp";
+    static final String OPER_HELP = "Help";
     static final String OPER_NUM_PARAMS = "#Params";
 
 	static final String LOCATION_URI = "EndPointURI";
@@ -42,7 +43,8 @@ public class ServiceTaxon extends TaxonProxy {
 
     public static final ArrayList<String> propertyNames = new ArrayList<String>(3);
     static {
-//      propertyNames.add( PROP_LSID);
+        propertyNames.add( PROP_LSID);
+        propertyNames.add( PROP_NAME);
         propertyNames.add( PROP_DESC);
         propertyNames.add( PROP_HELP);
         propertyNames.add( PROP_AUTHOR);
@@ -67,11 +69,14 @@ public class ServiceTaxon extends TaxonProxy {
 
         if(svc == null) return null;
 
-        if(propertyName.equals(PROP_DESC)) {
-            return new TaxonProperty(PROP_DESC, svc.getDescription());
-        }
-        else if(propertyName.equals(PROP_LSID)) {
+        if(propertyName.equals(PROP_LSID)) {
             return new TaxonProperty(PROP_LSID, svc.getLsid());
+        }
+        else if(propertyName.equals(PROP_NAME)) {
+            return new TaxonProperty(PROP_NAME, svc.getName());
+        }
+        else if(propertyName.equals(PROP_DESC)) {
+            return new TaxonProperty(PROP_DESC, svc.getDescription());
         }
         else if(propertyName.equals(PROP_AUTHOR)) {
             return new TaxonProperty(PROP_AUTHOR, svc.getAuthor());

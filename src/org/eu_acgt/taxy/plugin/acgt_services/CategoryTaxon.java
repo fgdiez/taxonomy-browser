@@ -13,16 +13,18 @@ import uk.ac.ebi.taxy.TaxonomyPlugin;
 
 public class CategoryTaxon extends TaxonProxy {
 
-    static final String PROP_DESC = "description";
-    static final String PROP_ONTOURI = "ontoUri";
-    static final String PROP_MAINCAT = "mainCategory";
+    static final String PROP_ONTOURI = "ID";
+    static final String PROP_NAME = "Name";
+    static final String PROP_DESC = "Description";
+    static final String PROP_MAINCAT = "MainCategory";
     static ImageIcon LEAF_ICON;
     static ImageIcon PARENT_ICON;
 
     public static final ArrayList<String> propertyNames = new ArrayList<String>(3);
     static {
-        propertyNames.add( PROP_DESC);
         propertyNames.add( PROP_ONTOURI);
+        propertyNames.add( PROP_NAME);
+        propertyNames.add( PROP_DESC);
         propertyNames.add( PROP_MAINCAT);
     }
 
@@ -43,11 +45,14 @@ public class CategoryTaxon extends TaxonProxy {
 
         if(cat == null) return null;
 
-        if(propertyName.equals(PROP_DESC)) {
-            return new TaxonProperty(PROP_DESC, cat.getDescription());
-        }
-        else if(propertyName.equals(PROP_ONTOURI)) {
+        if(propertyName.equals(PROP_ONTOURI)) {
             return new TaxonProperty(PROP_ONTOURI, cat.getOntoUri());
+        }
+        else if(propertyName.equals(PROP_NAME)) {
+            return new TaxonProperty(PROP_NAME, cat.getName());
+        }
+        else if(propertyName.equals(PROP_DESC)) {
+            return new TaxonProperty(PROP_DESC, cat.getDescription());
         }
         else if(propertyName.equals(PROP_MAINCAT)) {
             return new TaxonProperty(PROP_MAINCAT, "" + cat.getMainCategory());

@@ -19,18 +19,12 @@ public class TaxonMetadataUI
 	Logger logger = Logger.getLogger("TaxonMetadataUI");
 	private TaxonMetadataController _controller;
 
-    /**
-     * Container that lays out the taxon's properties.
-     */
-    private Box _mainBox;
-
     /** Constructs a new empty UI.
      */
     public TaxonMetadataUI()
     {
-        compose();
-
         _controller = new TaxonMetadataController( this );
+        setLayout( new BorderLayout());
     }
 
     /** Gets the controller.
@@ -62,13 +56,13 @@ public class TaxonMetadataUI
      */
     public void showProperties( TaxonProxy taxon )
     {
-        Component box = createTaxonBox( taxon );
+        Component container = createTaxonBag( taxon );
 
         removeAll();
-        add(box);
+        add(container);
 
         revalidate();
-        this.repaint();
+        repaint();
     }
 
 
@@ -77,103 +71,83 @@ public class TaxonMetadataUI
     public void clearView()
     {
         removeAll();
-        compose();
         revalidate();
     }
 
 
-    /**
-     * Creates a Box that contains the visual information of the given
-     * taxon.
-     *
-     * @param taxon
-     * @return
-     */
-    private Component createTaxonBox( TaxonProxy taxon )
+    private Component createTaxonBag( TaxonProxy taxon )
     {
-        Box box = Box.createVerticalBox();
-        
-        box.add( Box.createVerticalStrut( 20 ) );
-
-        box.add( createScalarView( "Identifier", taxon.getID()) );
-        box.add( createScalarView( "Name", taxon.getName()) );
-
-        box.add( Box.createVerticalStrut( 10 ) );
-
         ArrayList<String> propertyNames = taxon.getPropertyNames();
 
+        JPanel bag = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.gridy = 0;
+//        c.ipadx = 10;
+        
         for( int i = 0; i < propertyNames.size(); ++i )
         {
+            c.gridy = i;
             String name = (String) propertyNames.get( i );
 
             TaxonProperty p = taxon.getProperty( name );
 
             String scalar = p.getScalar();
 
+            // last row must have more weight than the others so that
+            // it pushes them up
+    		if(i == propertyNames.size() - 1) {
+    			c.weighty = 1;
+    		}
+    		else {
+    			c.weighty = 0;
+    		}
+
             if( scalar != null )
             {     
-            	Box scalarContainer = createScalarView(name, scalar);
-            	box.add(scalarContainer);
+        		JTextField textField = new JTextField(scalar);
+        		textField.setEditable(false);
+        		textField.setBackground(Color.WHITE);
+        		textField.setMaximumSize(new Dimension(textField.getMaximumSize().width, 25));
+        		
+        		JLabel textLabel = new JLabel(name, JLabel.TRAILING);
+        		textLabel.setLabelFor(textField);
+        		
+        		c.gridx = 0;
+        		c.weightx = 0;
+        		c.insets = new Insets(2,5,2,5);
+        		bag.add(textLabel,c);
+
+        		c.gridx = 1;
+        		c.weightx = 1;
+        		bag.add(textField,c);
             }
             else
             {
                 Table tableProperty = p.getTable();
 
-//                Debug.ASSERT( tableProperty != null, "Unknown property type= " + name );
                 if(tableProperty == null ) continue;
-
-                box.add( Box.createVerticalStrut( 10 ) );
 
                 JTable table = tableProperty.getJTable();
                 table.setCellSelectionEnabled(true);
                 
-                int cellHeight = table.getCellRect(0, 0, true).height;
-                logger.info("Cell heigth: " + cellHeight);
-				table.setPreferredScrollableViewportSize(new Dimension(table.getMaximumSize().width, cellHeight));
+                int cellHeight = table.getRowHeight()*(table.getRowCount()+1);
+                int cellWidth= 530;
+
+				table.setPreferredScrollableViewportSize(new Dimension(cellWidth, cellHeight));
 
 				JScrollPane tablePane = new JScrollPane(table); 
                 tablePane.setBorder(BorderFactory.createTitledBorder(p.getName()));
-                tablePane.setMaximumSize(new Dimension(tablePane.getMaximumSize().width, cellHeight + 50));
                 
-                box.add( tablePane );
-                box.add( Box.createVerticalStrut( 10 ) );
+                c.anchor = GridBagConstraints.FIRST_LINE_START;
+                c.gridwidth = 2;
+        		c.gridx = 0;
+                c.weightx = 1; // expand this component horizontally
+        		bag.add(tablePane,c);
             }
         }
 
-        return box;
-    }
-
-	private Box createScalarView(String name, String scalar) {
-		Box scalarContainer = Box.createHorizontalBox();
-		
-		JTextField textField = new JTextField(scalar);
-		textField.setEditable(false);
-		textField.setBackground(Color.WHITE);
-		textField.setMaximumSize(new Dimension(textField.getMaximumSize().width, 25));
-		
-		JLabel textLabel = new JLabel(name, JLabel.TRAILING);
-		textLabel.setLabelFor(textField);
-				
-		scalarContainer.add( textLabel);
-		scalarContainer.add(new Box.Filler(new Dimension(5,5), new Dimension(10,5), new Dimension(30,5)));
-		scalarContainer.add(textField);
-		return scalarContainer;
-	}
-
-
-
-    /**
-     * Composes UI components.
-     */
-    private void compose( )
-    {
-        // Box
-        _mainBox = Box.createVerticalBox();
-
-        // this container initialization
-        setLayout( new BorderLayout( 0, 1 ) );
-        add( new JLabel( "Element Details" ), BorderLayout.NORTH );
-        add( _mainBox );
+        return bag;
     }
 }
 
