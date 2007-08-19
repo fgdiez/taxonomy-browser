@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Taxy
-AppVerName=Taxy v1.1.0-alpha2
+AppVerName=Taxy v1.1.0-alpha3
 AppPublisher=Universidad de Malaga
 AppPublisherURL=http://www.bitlab.es
 AppSupportURL=http://www.bitlab.es
@@ -11,11 +11,11 @@ AppUpdatesURL=http://www.bitlab.es
 DefaultDirName={pf}\Taxy1.1.0
 DefaultGroupName=Taxy
 AllowNoIcons=yes
-OutputBaseFilename=Taxy1.1.0-alpha2_setup
+OutputBaseFilename=Taxy1.1.0-alpha3_setup
 Compression=lzma
 SolidCompression=yes
-SourceDir=c:\workspace\fede\taxy\release\
-LicenseFile=c:\workspace\fede\taxy\release\LICENSE
+SourceDir=release
+LicenseFile=LICENSE
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
