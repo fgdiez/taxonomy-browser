@@ -1,79 +1,81 @@
 package org.eu_acgt.taxy.plugin.acgt_services;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
 import uk.ac.ebi.taxy.EasyDialog;
-import javax.swing.*;
-import java.awt.event.*;
 
-
-/** This class defines a dialog for selecting the directory where
- * the NCBI flat files are located.
+/**
+ * This class defines a dialog for selecting the directory where the NCBI flat
+ * files are located.
  */
-public class DirectoryLocationDialog implements ActionListener
-{
-//    private JTextField _pathField;
+public class DirectoryLocationDialog implements ActionListener {
 
-    private JButton _okButton;
+   // private JTextField _pathField;
 
-//    private JButton _cancelButton;
+   private JButton _okButton;
 
-    private EasyDialog _dialog;
+   // private JButton _cancelButton;
 
-    private boolean _inputSubmitted;
+   private EasyDialog _dialog;
 
+   private boolean _inputSubmitted;
 
-    /** Constructs a new dialog with the specified parent frame
-     * @param parentFrame Window that will be the parent of this dialog.
-     */
-    public DirectoryLocationDialog( JFrame parentFrame )
-    {
-        _dialog =
-            new EasyDialog( parentFrame, true,
-                            "ACGT Repo Services login",
-                            "Just press OK to continue",
-                            null );
+   /**
+    * Constructs a new dialog with the specified parent frame
+    * 
+    * @param parentFrame
+    *           Window that will be the parent of this dialog.
+    */
+   public DirectoryLocationDialog( JFrame parentFrame) {
 
-//        _pathField = _dialog.addInputField( "DB directory", null, false );
+      _dialog = new EasyDialog(parentFrame, true, "ACGT Repo Services login", "Just press OK to continue", null);
 
-        _okButton = _dialog.addButton( "Ok", this );
+      // _pathField = _dialog.addInputField( "DB directory", null, false );
 
-        _dialog.addButton( "Cancel", this );
+      _okButton = _dialog.addButton("Ok", this);
 
-        _inputSubmitted = false;
-    }
+      _dialog.addButton("Cancel", this);
 
-    public void actionPerformed( ActionEvent event )
-    {
-        Object source = event.getSource();
+      _inputSubmitted = false;
+   }
 
-        if( _okButton == source )
-        {
-            _inputSubmitted = true;
-        }
+   public void actionPerformed( ActionEvent event) {
 
-        _dialog.setVisible( false );
-    }
+      Object source = event.getSource();
 
-    /** Shows the dialog to the user.
-     * @return <code>true</code> if the user selected a directory.
-     *         <code>false</code> otherwise.
-     */
-    public boolean getInput()
-    {
-        _dialog.setVisible(true);
+      if (_okButton == source) {
+         _inputSubmitted = true;
+      }
 
-        boolean submitted = _inputSubmitted;
+      _dialog.setVisible(false);
+   }
 
-        _inputSubmitted = false;
+   /**
+    * Shows the dialog to the user.
+    * 
+    * @return <code>true</code> if the user selected a directory.
+    *         <code>false</code> otherwise.
+    */
+   public boolean getInput() {
 
-        return submitted;
-    }
+      _dialog.setVisible(true);
 
-    /** Gets the location of the directory selected by the user.
-     */
-//    public String getLocation()
-//    {
-//        return _pathField.getText();
-//    }
+      boolean submitted = _inputSubmitted;
+
+      _inputSubmitted = false;
+
+      return submitted;
+   }
+
+   /**
+    * Gets the location of the directory selected by the user.
+    */
+   // public String getLocation()
+   // {
+   // return _pathField.getText();
+   // }
 }
-
-

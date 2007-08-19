@@ -1,166 +1,163 @@
 package uk.ac.ebi.taxy;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import uk.ac.ebi.util.Debug;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-
-
-
 
 /**
  * This class defines an UI for requesting taxa searches.
  */
-public class SearchUI extends JPanel implements ActionListener
-{
-    ///////////////////////
-    // Private Constants
-    ///////////////////////
+@SuppressWarnings("serial")
+public class SearchUI extends JPanel implements ActionListener {
 
-    /** length in characters of _inputField 
-     */
-    private final int TEXT_FIELD_LENGTH = 30;
+   // /////////////////////
+   // Private Constants
+   // /////////////////////
 
-    ///////////////////////
-    // Private Attributes
-    ///////////////////////
-    
-    /** Controller of this UI
-     */
-    private SearchController _controller;
+   /**
+    * length in characters of _inputField
+    */
+   private final int TEXT_FIELD_LENGTH = 30;
 
-    /** button for the submission of a search request.
-     */
-    private JButton  _searchButton;
+   // /////////////////////
+   // Private Attributes
+   // /////////////////////
 
-    /** Text field for user inputs.
-     */
-    private JTextField  _inputField;
+   /**
+    * Controller of this UI
+    */
+   private SearchController _controller;
 
-    /** Combo box for selection of search type.
-     */
-    private JComboBox  _queryTypes;
+   /**
+    * button for the submission of a search request.
+    */
+   private JButton _searchButton;
 
+   /**
+    * Text field for user inputs.
+    */
+   private JTextField _inputField;
 
-    //////////////////////////
-    // Public Operations
-    //////////////////////////
+   /**
+    * Combo box for selection of search type.
+    */
+   private JComboBox _queryTypes;
 
-    /** Constructs a new search UI that operates over the specified
-     * <code>SearchResultController</code> and
-     * <code>BrowserController</code>.
-     */
-    public SearchUI( SearchResultController resultController,
-                     TaxyController browserController )
-    {
-        // compose graphycal elements
-        compose();
+   // ////////////////////////
+   // Public Operations
+   // ////////////////////////
 
-        // create controller
-        _controller = new SearchController( resultController, 
-                                            browserController );
-    } 
+   /**
+    * Constructs a new search UI that operates over the specified
+    * <code>SearchResultController</code> and <code>BrowserController</code>.
+    */
+   public SearchUI( SearchResultController resultController, TaxyController browserController) {
 
-    /** Returns the controller of this UI.
-     */
-    public SearchController getController()
-    {
-        return _controller;
-    }
+      // compose graphycal elements
+      compose();
 
-    /**
-     * Overrides the setEnabled operation. It is required for 
-     * disabling properly the UI components contained whinin
-     * this class.
-     */
-    public void setEnabled( boolean enabled )
-    {
-        super.setEnabled( enabled );
+      // create controller
+      _controller = new SearchController(resultController, browserController);
+   }
 
-        Component[] components = getComponents();
+   /**
+    * Returns the controller of this UI.
+    */
+   public SearchController getController() {
 
-        for( int i = 0; i < components.length; i++ )
-        {
-            components[ i ].setEnabled( enabled );
-        }
-    
-    } 
+      return _controller;
+   }
 
+   /**
+    * Overrides the setEnabled operation. It is required for disabling properly
+    * the UI components contained whinin this class.
+    */
+   public void setEnabled( boolean enabled) {
 
-    /** Clears the content of this UI.
-     */
-    public void clearView()
-    {
-        removeAll();
-        compose();
-        revalidate();
-    }
+      super.setEnabled(enabled);
 
+      Component[] components = getComponents();
 
-    /**
-     * Reacts to events from the <i>Search</i> button. 
-     * It forwards the search request to the controller.
-     */
-    public void actionPerformed( ActionEvent e )
-    {
-        Object source = e.getSource();
+      for (int i = 0; i < components.length; i++) {
+         components[i].setEnabled(enabled);
+      }
 
-        if( (source == _searchButton) || (source == _inputField) ) 
-        {
-            // search button clicked or Enter key pressed in the input field
+   }
 
-            String searchExpression =_inputField.getText();
+   /**
+    * Clears the content of this UI.
+    */
+   public void clearView() {
 
-            SearchType searchType = (SearchType) _queryTypes.getSelectedItem();
+      removeAll();
+      compose();
+      revalidate();
+   }
 
-            _controller.search( searchExpression, searchType );
-        }
-        else 
-        {
-            Debug.TRACE( "ERROR: Unknown event" );
-        }
-    
-    } // operation actionPerformed
+   /**
+    * Reacts to events from the <i>Search</i> button. It forwards the search
+    * request to the controller.
+    */
+   public void actionPerformed( ActionEvent e) {
 
+      Object source = e.getSource();
 
-    ///////////////////////
-    // Private Operations
-    ///////////////////////
+      if ((source == _searchButton) || (source == _inputField)) {
+         // search button clicked or Enter key pressed in the input field
 
-    /**
-     * Composes the graphical elements of this UI component.
-     */
-    private void compose( )
-    {
-        // creation of graphycal elements
-        _searchButton = new JButton("Search!");
+         String searchExpression = _inputField.getText();
 
-        _searchButton.addActionListener( this );
-        
+         SearchType searchType = (SearchType) _queryTypes.getSelectedItem();
 
-        _inputField = new JTextField();
+         _controller.search(searchExpression, searchType);
+      }
+      else {
+         Debug.TRACE("ERROR: Unknown event");
+      }
 
-        _inputField.addActionListener( this );
+   } // operation actionPerformed
 
+   // /////////////////////
+   // Private Operations
+   // /////////////////////
 
-        _queryTypes = new JComboBox( SearchType.createArray() );
-        
+   /**
+    * Composes the graphical elements of this UI component.
+    */
+   private void compose() {
 
-        // add elements
-        add( new JLabel( "Search Form" ), BorderLayout.NORTH );
-        
-        _inputField.setColumns( TEXT_FIELD_LENGTH );
+      // creation of graphycal elements
+      _searchButton = new JButton("Search!");
 
-        add( _inputField, BorderLayout.CENTER );
-        
-        add( _searchButton, BorderLayout.CENTER );
+      _searchButton.addActionListener(this);
 
-        add( _queryTypes );
-        
-    } // operation compose
+      _inputField = new JTextField();
+
+      _inputField.addActionListener(this);
+
+      _queryTypes = new JComboBox(SearchType.createArray());
+
+      // add elements
+      add(new JLabel("Search Form"), BorderLayout.NORTH);
+
+      _inputField.setColumns(TEXT_FIELD_LENGTH);
+
+      add(_inputField, BorderLayout.CENTER);
+
+      add(_searchButton, BorderLayout.CENTER);
+
+      add(_queryTypes);
+
+   } // operation compose
 
 } // class SearchUI
-
 

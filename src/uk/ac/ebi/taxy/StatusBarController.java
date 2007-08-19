@@ -1,153 +1,157 @@
 package uk.ac.ebi.taxy;
 
-
 /**
  * This class is the controller for <code>StatusBarUI</code>.
  */
-public class StatusBarController
-{
-    //////////////////////////
-    // Private Attributes
-    //////////////////////////
+public class StatusBarController {
 
-    private StatusBarUI _ui;
+   // ////////////////////////
+   // Private Attributes
+   // ////////////////////////
 
-    /**
-     * Default delay for writing delayed text of the status bar.
-     */
-    private final int DEFAULT_DELAY = 4; // default seconds of delay
+   private StatusBarUI _ui;
 
+   /**
+    * Default delay for writing delayed text of the status bar.
+    */
+   private final int DEFAULT_DELAY = 4; // default seconds of delay
 
-    //////////////////////////
-    // Public Operations
-    //////////////////////////
-    
-    /** Creates a new status bar controller that operates over the
-     * specified UI.
-     * @param ui The status bar over which this controller operates.
-     */
-    public StatusBarController( StatusBarUI ui )
-    {
-        _ui = ui;
-    }
+   // ////////////////////////
+   // Public Operations
+   // ////////////////////////
 
-    /** Write text on the status bar.
-     */
-    public void setText( String text )
-    {
-        _ui.setText( text );
-    }
+   /**
+    * Creates a new status bar controller that operates over the specified UI.
+    * 
+    * @param ui
+    *           The status bar over which this controller operates.
+    */
+   public StatusBarController( StatusBarUI ui) {
 
-    /**
-     * Display a transient text on the status bar. The specified text
-     * will be shown in the status bar just for a few seconds.
-     * 
-     * @param transientText Text to be displayed.
-     */
-    public void setTransientText( String transientText ) 
-    {
-        String previousText = _ui.getText();
+      _ui = ui;
+   }
 
-        _ui.setText( transientText );
+   /**
+    * Write text on the status bar.
+    */
+   public void setText( String text) {
 
-        setDelayedText( previousText );
-    }
+      _ui.setText(text);
+   }
 
+   /**
+    * Display a transient text on the status bar. The specified text will be
+    * shown in the status bar just for a few seconds.
+    * 
+    * @param transientText
+    *           Text to be displayed.
+    */
+   public void setTransientText( String transientText) {
 
-    /**
-     * Writes in the status bar after a default delay.
-     * 
-     * @param text   text to be written.
-     */
-    public void setDelayedText( String text ) 
-    {
-        setDelayedText( text, DEFAULT_DELAY );
-    }
+      String previousText = _ui.getText();
 
+      _ui.setText(transientText);
 
-    /**
-     * It writes in the status bar the specified text after the specified seconds.
-     * 
-     * @param text Text to be written.
-     * @param delay  Seconds to wait before writting the text.
-     */
-    public void setDelayedText( String text, int delay ) 
-    {
-        DelayedWriter delayedWriter = new DelayedWriter( _ui );
+      setDelayedText(previousText);
+   }
 
-        delayedWriter.printDelayedText( text, delay );
-    }
+   /**
+    * Writes in the status bar after a default delay.
+    * 
+    * @param text
+    *           text to be written.
+    */
+   public void setDelayedText( String text) {
 
+      setDelayedText(text, DEFAULT_DELAY);
+   }
 
-    /** This class is allows to write in a status bar with a delay.
-     */
-    class DelayedWriter extends java.util.TimerTask
-    {
-        /**
-         * status bar where a text will be written.
-         */
-        private StatusBarUI _statusBar;
+   /**
+    * It writes in the status bar the specified text after the specified
+    * seconds.
+    * 
+    * @param text
+    *           Text to be written.
+    * @param delay
+    *           Seconds to wait before writting the text.
+    */
+   public void setDelayedText( String text, int delay) {
 
-        /**
-         * the text to be written on the status bar.
-         */
-        private String _text;
+      DelayedWriter delayedWriter = new DelayedWriter(_ui);
 
+      delayedWriter.printDelayedText(text, delay);
+   }
 
-        /**
-         * Constructs a new delayed writer that will operate on the
-	 * specified status bar.
-         */
-        DelayedWriter( StatusBarUI statusBar ) 
-        {
-            _statusBar = statusBar;
-        }
+   /**
+    * This class is allows to write in a status bar with a delay.
+    */
+   class DelayedWriter extends java.util.TimerTask {
 
+      /**
+       * status bar where a text will be written.
+       */
+      private StatusBarUI _statusBar;
 
-        /**
-         * Prints on the status bar a given text with a given delay.
-         * 
-         * @param text   text to be printed.
-         * @param delay  delay for writting the text on the status bar.
-         */
-        void printDelayedText( String text, int delay ) 
-        {
-            _text = text;
+      /**
+       * the text to be written on the status bar.
+       */
+      private String _text;
 
-            java.util.Date date = getDelayedDate( delay );
+      /**
+       * Constructs a new delayed writer that will operate on the specified
+       * status bar.
+       */
+      DelayedWriter( StatusBarUI statusBar) {
 
-            java.util.Timer timer = new java.util.Timer();
+         _statusBar = statusBar;
+      }
 
-            timer.schedule( this, date );
-        }
+      /**
+       * Prints on the status bar a given text with a given delay.
+       * 
+       * @param text
+       *           text to be printed.
+       * @param delay
+       *           delay for writting the text on the status bar.
+       */
+      void printDelayedText( String text, int delay) {
 
+         _text = text;
 
-        /**
-         * Writes on the status bar.
-         * 
-         * @see java.util.TimerTask.run
-         */
-        public void run() 
-        {
-            _statusBar.setText( _text );
-        }
+         java.util.Date date = getDelayedDate(delay);
 
-        /**
-         * Get a new future Date.
-         * 
-         * @param seconds seconds in the future of the date to be returned.
-         * @return A java.util.Date of the future next given seconds.
-         */
-        private java.util.Date getDelayedDate( int delay ) 
-        {
-            java.util.Calendar calendar = java.util.Calendar.getInstance();
+         java.util.Timer timer = new java.util.Timer();
 
-            calendar.add( java.util.Calendar.SECOND, delay );
+         timer.schedule(this, date);
+      }
 
-            java.util.Date date = calendar.getTime();
+      /**
+       * Writes on the status bar.
+       * 
+       * @see java.util.TimerTask.run
+       */
+      public void run() {
 
-            return date;
-        }
-    }
+         _statusBar.setText(_text);
+      }
+
+      /**
+       * Get a new future Date.
+       * 
+       * @param seconds
+       *           seconds in the future of the date to be returned.
+       * @return A java.util.Date of the future next given seconds.
+       */
+      private java.util.Date getDelayedDate( int delay) {
+
+         java.util.Calendar calendar = java.util.Calendar.getInstance();
+
+         calendar.add(java.util.Calendar.SECOND, delay);
+
+         java.util.Date date = calendar.getTime();
+
+         return date;
+      }
+   }
 
 }

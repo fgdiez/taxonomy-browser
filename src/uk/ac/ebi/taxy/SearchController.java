@@ -1,118 +1,110 @@
 package uk.ac.ebi.taxy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.ac.ebi.util.Debug;
-
-import java.util.Vector;
-
 
 /**
  * This class is the controller for <code>SearchUI</code>.
  */
-public class SearchController
-{
-    ////////////////////////
-    // Private Attributes
-    ////////////////////////
+public class SearchController {
 
-    private SearchResultController _resultController;
+   // //////////////////////
+   // Private Attributes
+   // //////////////////////
 
-    private TaxyController _browserController;
+   private SearchResultController _resultController;
 
-    ///////////////////////
-    // Public Operations
-    ///////////////////////
+   private TaxyController _browserController;
 
-    /** Constructs a new controller that will operate over the
-     * specified <code>SearchResultController</code> and
-     * <code>BrowserController</code>.
-     */
-    public SearchController( SearchResultController resultController,
-                             TaxyController browserController )
-    {
-        _resultController = resultController;
-        _browserController = browserController;
-    }
+   // /////////////////////
+   // Public Operations
+   // /////////////////////
 
-    /** Perform a new taxa search.
-     * @param expression The search expression.
-     * @param type The type of search.
-     */
-    public void search( String expression, SearchType type )
-    {
-        try
-        {
-            TaxonomyPlugin taxonProvider = _browserController.getTaxonProvider();
+   /**
+    * Constructs a new controller that will operate over the specified
+    * <code>SearchResultController</code> and <code>BrowserController</code>.
+    */
+   public SearchController( SearchResultController resultController, TaxyController browserController) {
 
-            Debug.ASSERT( taxonProvider != null, "Taxon provider not set." );
+      _resultController = resultController;
+      _browserController = browserController;
+   }
 
-            Vector taxa = null;
+   /**
+    * Perform a new taxa search.
+    * 
+    * @param expression
+    *           The search expression.
+    * @param type
+    *           The type of search.
+    */
+   public void search( String expression, SearchType type) {
 
-            if( type == SearchType.GET_TAXA_BY_NAME )
-            {
-                taxa = taxonProvider.getTaxaByName( expression );
+      try {
+         TaxonomyPlugin taxonProvider = _browserController.getTaxonProvider();
 
-                if( (taxa == null) || (taxa.size() == 0) )
-                {
-                    _browserController.showWarningDialog( "Search Result", "No results" );
-                    return;
-                }
+         Debug.ASSERT(taxonProvider != null, "Taxon provider not set.");
 
-                String title = "Search Dialog";
-                String message = null;
+         List<TaxonProxy> taxa = null;
 
-                if( taxa.size() > 1 )
-                {
-                    message = "" + taxa.size() + " taxa found";
-                }
-                else
-                {
-                    message = "" + taxa.size() + " taxon found";
-                }
+         if (type == SearchType.GET_TAXA_BY_NAME) {
+            taxa = taxonProvider.getTaxaByName(expression);
 
-                _browserController.showInformativeDialog( title, message );
-
-                java.util.Collections.sort( taxa );
-
-                _resultController.setResult( taxa );
+            if ((taxa == null) || (taxa.size() == 0)) {
+               _browserController.showWarningDialog("Search Result", "No results");
+               return;
             }
-            else if( type == SearchType.GET_TAXON_BY_ID )
-            {
-                String id = expression;
 
-                TaxonProxy taxon = taxonProvider.getTaxonProxy( id );
+            String title = "Search Dialog";
+            String message = null;
 
-                if( taxon == null )
-                {
-                    String title = "Search Dialog";
-                    String message = "No taxon found with this ID";
-
-                    _browserController.showWarningDialog( title, message );
-                }
-                else
-                {
-                    taxa = new Vector( 1 );
-                    taxa.add( taxon );
-
-                    String title = "Search Dialog";
-                    String message = "Taxon found";
-                    _browserController.showInformativeDialog( title, message );
-
-                    _resultController.setResult( taxa );
-                }
+            if (taxa.size() > 1) {
+               message = "" + taxa.size() + " taxa found";
             }
-            else
-            {
-                    Debug.TRACE( "ERROR: Unknown query type" );
-                    return;
+            else {
+               message = "" + taxa.size() + " taxon found";
             }
-        }
-        catch( NumberFormatException ex )
-        {
-            String title = "Input Dialog";
-            String message = "Illegal Input format.\nYou must type an integer";
 
-            _browserController.showWarningDialog( title, message );
-        }
-    }
+            _browserController.showInformativeDialog(title, message);
+
+            java.util.Collections.sort(taxa);
+
+            _resultController.setResult(taxa);
+         }
+         else if (type == SearchType.GET_TAXON_BY_ID) {
+            String id = expression;
+
+            TaxonProxy taxon = taxonProvider.getTaxonProxy(id);
+
+            if (taxon == null) {
+               String title = "Search Dialog";
+               String message = "No taxon found with this ID";
+
+               _browserController.showWarningDialog(title, message);
+            }
+            else {
+               taxa = new ArrayList<TaxonProxy>(1);
+               taxa.add(taxon);
+
+               String title = "Search Dialog";
+               String message = "Taxon found";
+               _browserController.showInformativeDialog(title, message);
+
+               _resultController.setResult(taxa);
+            }
+         }
+         else {
+            Debug.TRACE("ERROR: Unknown query type");
+            return;
+         }
+      }
+      catch (NumberFormatException ex) {
+         String title = "Input Dialog";
+         String message = "Illegal Input format.\nYou must type an integer";
+
+         _browserController.showWarningDialog(title, message);
+      }
+   }
 }
-

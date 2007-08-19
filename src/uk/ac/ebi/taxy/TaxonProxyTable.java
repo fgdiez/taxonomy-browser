@@ -1,132 +1,123 @@
 package uk.ac.ebi.taxy;
 
+import java.awt.Component;
+import java.util.List;
 
-import javax.swing.*;
-import javax.swing.table.*;
-import javax.swing.event.*;
-import java.awt.*;
-import java.util.*;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
-
-
-/** This class defines a table for displaying a collection of <code>TaxonProxy</code>.
+/**
+ * This class defines a table for displaying a collection of
+ * <code>TaxonProxy</code>.
  */
-public class TaxonProxyTable 
-    extends JTable
-{
-    /**
-     * Table's data model.
-     */
-    private TaxonProxyTableModel _model;
+@SuppressWarnings("serial")
+public class TaxonProxyTable extends JTable {
 
+   /**
+    * Table's data model.
+    */
+   private TaxonProxyTableModel _model;
 
-    /**
-     * Table's container.
-     */
-    private JScrollPane _pane;
+   /**
+    * Table's container.
+    */
+   private JScrollPane _pane;
 
+   /**
+    * Contructs a new empty table.
+    */
+   public TaxonProxyTable() {
 
-    /**
-     * Contructs a new empty table.
-     */
-    public TaxonProxyTable()
-    {
-        super();
+      super();
 
-        _model = new TaxonProxyTableModel();
+      _model = new TaxonProxyTableModel();
 
-        setModel( _model );
+      setModel(_model);
 
-        _pane = new JScrollPane( this );
+      _pane = new JScrollPane(this);
 
-        compose();
-    }
+      compose();
+   }
 
-    
-    /**
-     * Overrides the setEnabled operation. It is required for 
-     * disabling properly the UI components contained whinin
-     * this class.
-     */
-    public void setEnabled( boolean enabled )
-    {
-        super.setEnabled( enabled );
+   /**
+    * Overrides the setEnabled operation. It is required for disabling properly
+    * the UI components contained whinin this class.
+    */
+   public void setEnabled( boolean enabled) {
 
-        Component[] components = _pane.getComponents();
+      super.setEnabled(enabled);
 
-        for( int i = 0; i < components.length; i++ )
-        {
-            components[ i ].setEnabled( enabled );
-        }
+      Component[] components = _pane.getComponents();
 
-        components = getComponents();
+      for (int i = 0; i < components.length; i++) {
+         components[i].setEnabled(enabled);
+      }
 
-        for( int i = 0; i < components.length; i++ )
-        {
-            components[ i ].setEnabled( enabled );
-        }
+      components = getComponents();
 
-        if( _pane.getColumnHeader() != null )
-        {
-            _pane.getColumnHeader().setEnabled( enabled );
-        }
+      for (int i = 0; i < components.length; i++) {
+         components[i].setEnabled(enabled);
+      }
 
-        getTableHeader().setEnabled( enabled );
-    }
+      if (_pane.getColumnHeader() != null) {
+         _pane.getColumnHeader().setEnabled(enabled);
+      }
 
+      getTableHeader().setEnabled(enabled);
+   }
 
-    /**
-     * Returns the container of the graphical table.
-     * @return The table container (which is a JScrollPane).
-     */
-    public JComponent getContainer()
-    {
-        return _pane;
-    }
+   /**
+    * Returns the container of the graphical table.
+    * 
+    * @return The table container (which is a JScrollPane).
+    */
+   public JComponent getContainer() {
 
+      return _pane;
+   }
 
-    /** Sets the taxa to be displayed.
-     * @param content A collection of <code>TaxonProxy</code>.
-     */
-    public void setContent( Vector content ) 
-    {
-        _model.setContent( content );
-    }
+   /**
+    * Sets the taxa to be displayed.
+    * 
+    * @param content
+    *           A collection of <code>TaxonProxy</code>.
+    */
+   public void setContent( List<TaxonProxy> content) {
 
+      _model.setContent(content);
+   }
 
-    /**
-     * Compose the graphical elements of this class.
-     */
-    private void compose()
-    {
-        setTableColumnsWidth();
+   /**
+    * Compose the graphical elements of this class.
+    */
+   private void compose() {
 
+      setTableColumnsWidth();
 
-        Dimension preferredSize = getPreferredSize();
-        preferredSize.height += 35;
-        _pane.setPreferredSize( preferredSize );
+//      Dimension preferredSize = getPreferredSize();
+//      preferredSize.height += 35;
+//      _pane.setPreferredSize(preferredSize);
+//
+//      Dimension maxSize = _pane.getMaximumSize();
+//      maxSize.height = preferredSize.height;
+//      _pane.setMaximumSize(maxSize);
 
-        Dimension maxSize = _pane.getMaximumSize();
-        maxSize.height = preferredSize.height;
-        _pane.setMaximumSize( maxSize );
+   }
 
-    }
+   /**
+    * Sets the displayed width of the table columns.
+    */
+   private void setTableColumnsWidth() {
 
+      TableColumn column = null;
 
-    /** Sets the displayed width of the table columns.
-     */
-    private void setTableColumnsWidth()
-    {
+      column = getColumnModel().getColumn(0);
+      column.setPreferredWidth(100);
 
-        TableColumn column = null;
-        
-        column = getColumnModel().getColumn(0);
-        column.setPreferredWidth(100);
-
-        column = getColumnModel().getColumn(1);
-        column.setPreferredWidth(30);
-    }
+      column = getColumnModel().getColumn(1);
+      column.setPreferredWidth(30);
+   }
 
 }
-
-

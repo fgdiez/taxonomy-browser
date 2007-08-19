@@ -10,84 +10,88 @@ import uk.ac.ebi.taxy.TaxonProperty;
 import uk.ac.ebi.taxy.TaxonProxy;
 import uk.ac.ebi.taxy.TaxonomyPlugin;
 
-
 public class CategoryTaxon extends TaxonProxy {
 
-    static final String PROP_ONTOURI = "ID";
-    static final String PROP_NAME = "Name";
-    static final String PROP_DESC = "Description";
-    static final String PROP_MAINCAT = "MainCategory";
-    static ImageIcon LEAF_ICON;
-    static ImageIcon PARENT_ICON;
+   static final String PROP_ONTOURI = "ID";
+   static final String PROP_NAME = "Name";
+   static final String PROP_DESC = "Description";
+   static final String PROP_MAINCAT = "MainCategory";
+   static ImageIcon LEAF_ICON;
+   static ImageIcon PARENT_ICON;
 
-    public static final ArrayList<String> propertyNames = new ArrayList<String>(3);
-    static {
-        propertyNames.add( PROP_ONTOURI);
-        propertyNames.add( PROP_NAME);
-        propertyNames.add( PROP_DESC);
-        propertyNames.add( PROP_MAINCAT);
-    }
+   public static final ArrayList<String> propertyNames = new ArrayList<String>(3);
+   static {
+      propertyNames.add(PROP_ONTOURI);
+      propertyNames.add(PROP_NAME);
+      propertyNames.add(PROP_DESC);
+      propertyNames.add(PROP_MAINCAT);
+   }
 
-    final FunctionalCategory cat;
-    final TaxonProxy parent;
-    ArrayList<TaxonProxy> children = new ArrayList<TaxonProxy>();
+   final FunctionalCategory cat;
+   final TaxonProxy parent;
+   ArrayList<TaxonProxy> children = new ArrayList<TaxonProxy>();
 
-    public CategoryTaxon( FunctionalCategory cat, TaxonProxy parent, String id, String name, TaxonomyPlugin taxonomyProvider) {
-        super( id, name, taxonomyProvider);
-        this.cat = cat;
-        this.parent = parent;
-        LEAF_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource( "closedFolder.gif"));
-        PARENT_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource( "openFolder.gif"));
-    }
+   public CategoryTaxon( FunctionalCategory cat, TaxonProxy parent, String id, String name, TaxonomyPlugin taxonomyProvider) {
 
-    @Override
-    public TaxonProperty getProperty( String propertyName) {
+      super(id, name, taxonomyProvider);
+      this.cat = cat;
+      this.parent = parent;
+      LEAF_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("closedFolder.gif"));
+      PARENT_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("openFolder.gif"));
+   }
 
-        if(cat == null) return null;
+   @Override
+   public TaxonProperty getProperty( String propertyName) {
 
-        if(propertyName.equals(PROP_ONTOURI)) {
-            return new TaxonProperty(PROP_ONTOURI, cat.getOntoUri());
-        }
-        else if(propertyName.equals(PROP_NAME)) {
-            return new TaxonProperty(PROP_NAME, cat.getName());
-        }
-        else if(propertyName.equals(PROP_DESC)) {
-            return new TaxonProperty(PROP_DESC, cat.getDescription());
-        }
-        else if(propertyName.equals(PROP_MAINCAT)) {
-            return new TaxonProperty(PROP_MAINCAT, "" + cat.getMainCategory());
-        }
-        return null;
-    }
+      if (cat == null) return null;
 
-    @Override
-    public ArrayList<String> getPropertyNames() {
-        return propertyNames;
-    }
+      if (propertyName.equals(PROP_ONTOURI)) {
+         return new TaxonProperty(PROP_ONTOURI, cat.getOntoUri());
+      }
+      else if (propertyName.equals(PROP_NAME)) {
+         return new TaxonProperty(PROP_NAME, cat.getName());
+      }
+      else if (propertyName.equals(PROP_DESC)) {
+         return new TaxonProperty(PROP_DESC, cat.getDescription());
+      }
+      else if (propertyName.equals(PROP_MAINCAT)) { return new TaxonProperty(PROP_MAINCAT, ""
+                                                                                           + cat.getMainCategory()); }
+      return null;
+   }
 
-    @Override
-    public ArrayList<TaxonProxy> getChildren() {
-        return children;
-    }
+   @Override
+   public ArrayList<String> getPropertyNames() {
 
-    @Override
-    public TaxonProxy getParent() {
-        return parent;
-    }
+      return propertyNames;
+   }
 
-    public void setChildren(ArrayList<TaxonProxy> children) {
-        this.children = children;
-    }
+   @Override
+   public ArrayList<TaxonProxy> getChildren() {
 
-    @Override
-    public boolean hasChildren() {
+      return children;
+   }
 
-        return children != null && children.size() > 0;
-    }
+   @Override
+   public TaxonProxy getParent() {
 
-    @Override
-    public ImageIcon getIcon() {
-        if( hasChildren() ) return PARENT_ICON;
-        return LEAF_ICON;
-    }
+      return parent;
+   }
+
+   public void setChildren( ArrayList<TaxonProxy> children) {
+
+      this.children = children;
+   }
+
+   @Override
+   public boolean hasChildren() {
+
+      return children != null && children.size() > 0;
+   }
+
+   @Override
+   public ImageIcon getIcon() {
+
+      if (hasChildren()) return PARENT_ICON;
+      return LEAF_ICON;
+   }
 }

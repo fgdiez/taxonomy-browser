@@ -1,184 +1,180 @@
 package uk.ac.ebi.taxy;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeWillExpandListener;
+
 import uk.ac.ebi.util.Debug;
-
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import java.awt.event.*;
-
-
-
 
 /**
  * This class defines a UI for the visualization of the taxonomy tree.
  */
-public class TaxonomyTreeUI 
-    extends JPanel 
+@SuppressWarnings("serial")
+public class TaxonomyTreeUI extends JPanel
 
-    implements TreeSelectionListener,
-               TreeWillExpandListener
-{
-    ////////////////////////////////////
-    // Private Attributes
-    ////////////////////////////////////
-    
-    private TaxonomyTreeController _controller;
+implements TreeSelectionListener, TreeWillExpandListener {
 
-    /** Tree for visualizing lineage info.
-     */
-    private TaxonProxyTree _tree;
+   // //////////////////////////////////
+   // Private Attributes
+   // //////////////////////////////////
 
+   private TaxonomyTreeController _controller;
 
-    
-    ////////////////////////////////////
-    // Public Operations
-    ////////////////////////////////////
+   /**
+    * Tree for visualizing lineage info.
+    */
+   private TaxonProxyTree _tree;
 
-    /**
-     * Constructs a new UI for displaying a taxonomy tree.
-     * @param selectedTaxonController The controller to which to notify of
-     *                                a selection make on the tree.
-     * @param statusBarController The status bar controller where to
-     *                            write the lineage of the currently 
-     *                            selected taxon.
-     */
-    public TaxonomyTreeUI( TaxonMetadataController selectedTaxonController,
-                           StatusBarController statusBarController )
-    {
-        compose();
-    
-        // Controller creation
-        _controller = new TaxonomyTreeController( this, 
-                                                  selectedTaxonController,
-                                                  statusBarController );
-    }
-    
-    /** Returns the UI's controller.
-     */
-    public TaxonomyTreeController getController()
-    {
-        return _controller;
-    }
+   // //////////////////////////////////
+   // Public Operations
+   // //////////////////////////////////
 
-    /** Shows the specified taxon on the taxonomy tree.
-     */
-    public void showTaxon( TaxonProxy taxon )
-    {
-        _tree.removeTreeWillExpandListener( this );
-        _tree.removeTreeSelectionListener( this );
+   /**
+    * Constructs a new UI for displaying a taxonomy tree.
+    * 
+    * @param selectedTaxonController
+    *           The controller to which to notify of a selection make on the
+    *           tree.
+    * @param statusBarController
+    *           The status bar controller where to write the lineage of the
+    *           currently selected taxon.
+    */
+   public TaxonomyTreeUI( TaxonMetadataController selectedTaxonController, StatusBarController statusBarController) {
 
-        _tree.showTaxon( taxon );
-    
-        _tree.addTreeWillExpandListener( this );
-        _tree.addTreeSelectionListener( this );
-    }
+      compose();
 
-    /** Clears the currently selected taxon.
-     */
-    public void clearSelection()
-    {
-        _tree.removeTreeSelectionListener( this );
-        _tree.clearSelection();
-        _tree.addTreeSelectionListener( this );
-    }
+      // Controller creation
+      _controller = new TaxonomyTreeController(this, selectedTaxonController, statusBarController);
+   }
 
-    /** Clear the content of this UI.
-     */
-    public void clearView()
-    {
-        removeAll();
-        compose();
-        revalidate();
-    }
+   /**
+    * Returns the UI's controller.
+    */
+   public TaxonomyTreeController getController() {
 
-    /**
-     * Overrides the setEnabled operation. It is required for 
-     * disabling properly the UI components contained whinin
-     * this class.
-     */
-    public void setEnabled( boolean enabled )
-    {
-        super.setEnabled( enabled );
+      return _controller;
+   }
 
-        java.awt.Component[] contentArray = getComponents();
+   /**
+    * Shows the specified taxon on the taxonomy tree.
+    */
+   public void showTaxon( TaxonProxy taxon) {
 
-        for( int i = 0; i < contentArray.length; i++ )
-        {
-            contentArray[ i ].setEnabled( enabled );
-        }
+      _tree.removeTreeWillExpandListener(this);
+      _tree.removeTreeSelectionListener(this);
 
-        _tree.setEnabled( enabled );
-    }
+      _tree.showTaxon(taxon);
 
+      _tree.addTreeWillExpandListener(this);
+      _tree.addTreeSelectionListener(this);
+   }
 
-    /**
-     * Reacts to the selection of a taxon.
-     * Tells the controller to notify the selection made by the user.
-     */
-    public void valueChanged( TreeSelectionEvent event ) 
-    {
-        Object selection = event.getPath().getLastPathComponent();
+   /**
+    * Clears the currently selected taxon.
+    */
+   public void clearSelection() {
 
-        // discard null selections
-        if( selection == null ) 
-        {
-            Debug.TRACE( "Null tree selection!!!" );
-            return;
-        }
+      _tree.removeTreeSelectionListener(this);
+      _tree.clearSelection();
+      _tree.addTreeSelectionListener(this);
+   }
 
-        
-        TaxonProxyTreeNode node = (TaxonProxyTreeNode) selection;
-        
-        Debug.ASSERT( node != null, "Null tree node" );
+   /**
+    * Clear the content of this UI.
+    */
+   public void clearView() {
 
-        TaxonProxy selectedTaxon = (TaxonProxy) node.getUserObject();
+      removeAll();
+      compose();
+      revalidate();
+   }
 
-        _controller.notifySelection( selectedTaxon );
-    }
+   /**
+    * Overrides the setEnabled operation. It is required for disabling properly
+    * the UI components contained whinin this class.
+    */
+   public void setEnabled( boolean enabled) {
 
+      super.setEnabled(enabled);
 
-    /**
-     * Expands the selected node.
-     * @param event Contains the node to be expanded.
-     */
-    public void treeWillExpand( TreeExpansionEvent event ) 
-    {
-        TaxonProxyTreeNode node = (TaxonProxyTreeNode) 
-                                  event.getPath().getLastPathComponent();
-        
-        Debug.ASSERT( node != null, "Null node will expand!!!" );
+      java.awt.Component[] contentArray = getComponents();
 
-        // children are incarnated (in case they have not yet been added to 
-        // the taxnomy tree) and shown
-        _tree.expandNode( node );
+      for (int i = 0; i < contentArray.length; i++) {
+         contentArray[i].setEnabled(enabled);
+      }
 
-    }
+      _tree.setEnabled(enabled);
+   }
 
-    public void treeWillCollapse(TreeExpansionEvent event) {}
+   /**
+    * Reacts to the selection of a taxon. Tells the controller to notify the
+    * selection made by the user.
+    */
+   public void valueChanged( TreeSelectionEvent event) {
 
-    /////////////////////////////
-    // Private Operations
-    /////////////////////////////
+      Object selection = event.getPath().getLastPathComponent();
 
-    /** Lays out the graphical elements of the form 
-     */
-    private void compose( )
-    {
-        // UI components creation
-        _tree = new TaxonProxyTree();
+      // discard null selections
+      if (selection == null) {
+         Debug.TRACE("Null tree selection!!!");
+         return;
+      }
 
-        _tree.addTreeSelectionListener( this );
+      TaxonProxyTreeNode node = (TaxonProxyTreeNode) selection;
 
-        _tree.addTreeWillExpandListener( this );
+//      Debug.ASSERT(node != null, "Null tree node");
 
-        // addition of elements
-        setLayout( new java.awt.BorderLayout( 0, 1 ) );
+      TaxonProxy selectedTaxon = (TaxonProxy) node.getUserObject();
 
-        add( new JLabel( "Taxonomy Tree"), java.awt.BorderLayout.NORTH );
+      _controller.notifySelection(selectedTaxon);
+   }
 
-        add( _tree.getContainer() );
-    }
+   /**
+    * Expands the selected node.
+    * 
+    * @param event
+    *           Contains the node to be expanded.
+    */
+   public void treeWillExpand( TreeExpansionEvent event) {
+
+      TaxonProxyTreeNode node = (TaxonProxyTreeNode) event.getPath().getLastPathComponent();
+
+      Debug.ASSERT(node != null, "Null node will expand!!!");
+
+      // children are incarnated (in case they have not yet been added to
+      // the taxnomy tree) and shown
+      _tree.expandNode(node);
+
+   }
+
+   public void treeWillCollapse( TreeExpansionEvent event) {
+
+   }
+
+   // ///////////////////////////
+   // Private Operations
+   // ///////////////////////////
+
+   /**
+    * Lays out the graphical elements of the form
+    */
+   private void compose() {
+
+      // UI components creation
+      _tree = new TaxonProxyTree();
+
+      _tree.addTreeSelectionListener(this);
+
+      _tree.addTreeWillExpandListener(this);
+
+      // addition of elements
+      setLayout(new java.awt.BorderLayout(0, 1));
+
+      add(new JLabel("Taxonomy Tree"), java.awt.BorderLayout.NORTH);
+
+      add(_tree.getContainer());
+   }
 }
-
-

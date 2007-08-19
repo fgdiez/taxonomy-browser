@@ -1,148 +1,139 @@
 package uk.ac.ebi.taxy;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.util.List;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+
 import uk.ac.ebi.util.Debug;
-
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-
 
 /**
  * UI component for the visualization of found taxa from a requested search.
  */
-public class SearchResultUI 
-    extends JPanel 
-    implements javax.swing.event.ListSelectionListener
-{
-    ///////////////////////////////
-    // Private Attributes
-    ///////////////////////////////
+@SuppressWarnings("serial")
+public class SearchResultUI extends JPanel implements javax.swing.event.ListSelectionListener {
 
-    /** Controller of this UI.
-     */
-    private SearchResultController _controller;
+   /**
+    * Controller of this UI.
+    */
+   private SearchResultController _controller;
 
-    /**
-     * The displayed search result.
-     */
-    private TaxonProxyTable _resultTable;
+   /**
+    * The displayed search result.
+    */
+   private TaxonProxyTable _resultTable;
 
+   // /////////////////////////////
+   // Private Operations
+   // /////////////////////////////
 
-    ///////////////////////////////
-    // Private Operations
-    ///////////////////////////////
-    
-    /**
-     * Constructs a new search result UI that will operate
-     * over the specified <code>TaxonomyTreeController</code>,
-     * <code>TaxonController</code> and <code>StatusBarController</code>.
-     */
-    public SearchResultUI( TaxonomyTreeController lineageController,
-                           TaxonMetadataController   taxonController,
-                           StatusBarController statusBarController )
-    {
-        _controller = new SearchResultController( this, 
-                                                  lineageController,
-                                                  taxonController,
-                                                  statusBarController );
-        
-        // composition of graphycal elements
-        compose();
-    }
+   /**
+    * Constructs a new search result UI that will operate over the specified
+    * <code>TaxonomyTreeController</code>, <code>TaxonController</code> and
+    * <code>StatusBarController</code>.
+    */
+   public SearchResultUI( TaxonomyTreeController lineageController, TaxonMetadataController taxonController, StatusBarController statusBarController) {
 
-    /** Shows a new search result. It sets the content of the UI.
-     */
-    public void setContent( Vector taxa )
-    {
-        _resultTable.setContent( taxa );
-    }
+      _controller = new SearchResultController(this, lineageController, taxonController, statusBarController);
 
-    /** Returns the controller of this UI.
-     */
-    public SearchResultController getController()
-    {
-        return _controller;
-    }
-    
-    /**
-     * Overrides JComponent.setEnabled operation for proper disability of
-     * the content of this UI component.
-     */
-    public void setEnabled( boolean enabled )
-    {
-        super.setEnabled( enabled );
+      // composition of graphycal elements
+      compose();
+   }
 
-        Component[] components = getComponents();
+   /**
+    * Shows a new search result. It sets the content of the UI.
+    */
+   public void setContent( List<TaxonProxy> taxa) {
 
-        for( int i = 0; i < components.length; i++ )
-        {
-            components[ i ].setEnabled( enabled );
-        }
+      _resultTable.setContent(taxa);
+   }
 
-        _resultTable.setEnabled( enabled );
-    }
+   /**
+    * Returns the controller of this UI.
+    */
+   public SearchResultController getController() {
 
-    /**
-     * Reacts to user selections on _resultTable rows.
-     */
-    public void valueChanged( ListSelectionEvent e )
-    // Implements javax.swing.event.ListSelectionListener
-    {
-        // ignore extra messages
-        if(e.getValueIsAdjusting()) return;
+      return _controller;
+   }
 
-        ListSelectionModel selectionModel = (ListSelectionModel)
-                                            e.getSource(); 
+   /**
+    * Overrides JComponent.setEnabled operation for proper disability of the
+    * content of this UI component.
+    */
+   public void setEnabled( boolean enabled) {
 
-        if( ! selectionModel.isSelectionEmpty() )
-        {
+      super.setEnabled(enabled);
 
-            int row = selectionModel.getMinSelectionIndex();
+      Component[] components = getComponents();
 
-            selectionModel.clearSelection();
+      for (int i = 0; i < components.length; i++) {
+         components[i].setEnabled(enabled);
+      }
 
-            TaxonProxyTableModel model = (TaxonProxyTableModel) 
-                                         _resultTable.getModel();
+      _resultTable.setEnabled(enabled);
+   }
 
-            TaxonProxy taxon = model.getTaxon( row );
-            
-            Debug.ASSERT( taxon != null, "Illegal Result Table index = " + row );
+   /**
+    * Reacts to user selections on _resultTable rows.
+    */
+   public void valueChanged( ListSelectionEvent e)
+   // Implements javax.swing.event.ListSelectionListener
+   {
 
-            _controller.notifySelection( taxon );
-        }
-    }
+      // ignore extra messages
+      if (e.getValueIsAdjusting()) return;
 
-    /** Clear the content of the UI.
-     */
-    public void clearView()
-    {
-        removeAll();
-        compose();
-        revalidate();
-    }
+      ListSelectionModel selectionModel = (ListSelectionModel) e.getSource();
 
-    /////////////////////////
-    // Private operations
-    /////////////////////////
+      if (!selectionModel.isSelectionEmpty()) {
 
-    /** Lays out the graphical elements of the UI.
-     */
-    private void compose( )
-    {
-        // creation of graphycal elements
-        _resultTable = new TaxonProxyTable();
+         int row = selectionModel.getMinSelectionIndex();
 
-        _resultTable.getSelectionModel().addListSelectionListener( this );
+         selectionModel.clearSelection();
 
-        // addition of elements
-        setLayout( new BorderLayout( 0, 1 ) );
+         TaxonProxyTableModel model = (TaxonProxyTableModel) _resultTable.getModel();
 
-        add( new JLabel( "Query Result" ), BorderLayout.NORTH );
+         TaxonProxy taxon = model.getTaxon(row);
 
-        add( _resultTable.getContainer() );
-    }
+         Debug.ASSERT(taxon != null, "Illegal Result Table index = " + row);
+
+         _controller.notifySelection(taxon);
+      }
+   }
+
+   /**
+    * Clear the content of the UI.
+    */
+   public void clearView() {
+
+      removeAll();
+      compose();
+      revalidate();
+   }
+
+   // ///////////////////////
+   // Private operations
+   // ///////////////////////
+
+   /**
+    * Lays out the graphical elements of the UI.
+    */
+   private void compose() {
+
+      // creation of graphycal elements
+      _resultTable = new TaxonProxyTable();
+
+      _resultTable.getSelectionModel().addListSelectionListener(this);
+
+      // addition of elements
+      setLayout(new BorderLayout(0, 1));
+
+      add(new JLabel("Query Result"), BorderLayout.NORTH);
+
+      add(_resultTable.getContainer());
+   }
 }
-

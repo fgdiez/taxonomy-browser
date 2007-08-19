@@ -13,8 +13,7 @@ import javax.swing.JRadioButton;
 
 /**
  * This class defines a dialog for displaying descriptions of a collection of
- * available plug-ins and selecting one of them.
- * To use it:
+ * available plug-ins and selecting one of them. To use it:
  * <ul>
  * <li> Create an instance with the constructor.
  * <li> Call the <code>show</code> method.
@@ -22,208 +21,195 @@ import javax.swing.JRadioButton;
  * </ul>
  */
 @SuppressWarnings("serial")
-public class PluginDialog extends javax.swing.JDialog
-                          implements java.awt.event.ActionListener
-{
-    private java.util.HashMap< String, PluginDescription> _descriptions;
-    private java.util.HashMap< String, Class<TaxonomyPlugin>> _plugins;
+public class PluginDialog extends javax.swing.JDialog implements java.awt.event.ActionListener {
 
-    private javax.swing.JTextArea _description;
-    private javax.swing.JButton _okButton;
-    private javax.swing.JButton _cancelButton;
+   private java.util.HashMap<String, PluginDescription> _descriptions;
+   private java.util.HashMap<String, Class<TaxonomyPlugin>> _plugins;
 
-    private Class<TaxonomyPlugin> _selectedPlugin;
+   private javax.swing.JTextArea _description;
+   private javax.swing.JButton _okButton;
+   private javax.swing.JButton _cancelButton;
 
-    /**
-     * Constructor for creating a dialog of available plug-ins.
-     * @param parentFrame The parent window.
-     * @param plugins A collection of <code>Class</code> objects
-     *                of classes that implement the interface
-     *                <code>TaxonomyPlugin</code>.
-     * @param descriptions A collection of <code>PluginDescription</code>
-     *                     objects that describe the implementations
-     *                     of the available plug-ins.
-     */
-    public PluginDialog( javax.swing.JFrame parentFrame,
-                         ArrayList<Class<TaxonomyPlugin>> plugins,
-                         ArrayList<Class<PluginDescription>> descriptions )
-    {
-        super( parentFrame, "Available Plug-ins Dialog", true );
+   private Class<TaxonomyPlugin> _selectedPlugin;
 
-        iniDescriptions( plugins, descriptions );
+   /**
+    * Constructor for creating a dialog of available plug-ins.
+    * 
+    * @param parentFrame
+    *           The parent window.
+    * @param plugins
+    *           A collection of <code>Class</code> objects of classes that
+    *           implement the interface <code>TaxonomyPlugin</code>.
+    * @param descriptions
+    *           A collection of <code>PluginDescription</code> objects that
+    *           describe the implementations of the available plug-ins.
+    */
+   public PluginDialog( javax.swing.JFrame parentFrame, ArrayList<Class<TaxonomyPlugin>> plugins, ArrayList<Class<PluginDescription>> descriptions) {
 
-        javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+      super(parentFrame, "Available Plug-ins Dialog", true);
 
-        javax.swing.JPanel radioPanel = new javax.swing.JPanel();
+      iniDescriptions(plugins, descriptions);
 
-        radioPanel.setLayout( new java.awt.GridLayout(0, 1) );
+      javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 
-        _description = new javax.swing.JTextArea( "", 15,30 );
-        _description.setEditable( false );
+      javax.swing.JPanel radioPanel = new javax.swing.JPanel();
 
-        for( int i = 0; i < plugins.size(); ++i )
-        {
-            Class< TaxonomyPlugin> pluginClass = plugins.get( i );
+      radioPanel.setLayout(new java.awt.GridLayout(0, 1));
 
-            PluginDescription desc =_descriptions.get( pluginClass.getName() );
+      _description = new javax.swing.JTextArea("", 15, 30);
+      _description.setEditable(false);
 
-            JRadioButton button = new JRadioButton( pluginClass.getName() );
+      for (int i = 0; i < plugins.size(); ++i) {
+         Class<TaxonomyPlugin> pluginClass = plugins.get(i);
 
-            if( desc != null )
-            {
-                button.setText( desc.getName() );
-            }
+         PluginDescription desc = _descriptions.get(pluginClass.getName());
 
-            button.setActionCommand( desc.getPluginClassName() );
-            button.addActionListener( this );
+         JRadioButton button = new JRadioButton(pluginClass.getName());
 
-            if( i == 0 )
-            {
-                _description.setText( desc.getDescription() );
-                _selectedPlugin = pluginClass;
+         if (desc != null) {
+            button.setText(desc.getName());
+         }
 
-                button.setSelected( true );
-            }
+         button.setActionCommand(desc.getPluginClassName());
+         button.addActionListener(this);
 
-            buttonGroup.add( button );
-            radioPanel.add( button );
-        }
+         if (i == 0) {
+            _description.setText(desc.getDescription());
+            _selectedPlugin = pluginClass;
 
-        _description.setLineWrap( true );
-        _description.setWrapStyleWord( true );
+            button.setSelected(true);
+         }
 
-        _okButton = new javax.swing.JButton( "Ok" );
-        _okButton.addActionListener( this );
-        _cancelButton = new javax.swing.JButton( "Cancel" );
-        _cancelButton.addActionListener( this );
+         buttonGroup.add(button);
+         radioPanel.add(button);
+      }
 
-        javax.swing.JPanel buttonArea = new javax.swing.JPanel();
-        buttonArea.add( _okButton );
-        buttonArea.add( _cancelButton );
+      _description.setLineWrap(true);
+      _description.setWrapStyleWord(true);
 
-        JLabel message = new JLabel("  Select one of the following Plug-ins:" );
+      _okButton = new javax.swing.JButton("Ok");
+      _okButton.addActionListener(this);
+      _cancelButton = new javax.swing.JButton("Cancel");
+      _cancelButton.addActionListener(this);
 
-        Container contentPane = getContentPane();
-        contentPane.setLayout( new java.awt.BorderLayout() );
+      javax.swing.JPanel buttonArea = new javax.swing.JPanel();
+      buttonArea.add(_okButton);
+      buttonArea.add(_cancelButton);
 
-        Box content = Box.createVerticalBox();
-        Box selectionRegion = Box.createHorizontalBox();
+      JLabel message = new JLabel("  Select one of the following Plug-ins:");
 
-        content.add( javax.swing.Box.createVerticalStrut( 10 ) );
+      Container contentPane = getContentPane();
+      contentPane.setLayout(new java.awt.BorderLayout());
 
-        selectionRegion.add( javax.swing.Box.createHorizontalStrut( 10 ) );
-        selectionRegion.add( radioPanel );
-        selectionRegion.add( new javax.swing.JScrollPane( _description ) );
-        selectionRegion.add( javax.swing.Box.createHorizontalStrut( 10 ) );
+      Box content = Box.createVerticalBox();
+      Box selectionRegion = Box.createHorizontalBox();
 
-        content.add( selectionRegion );
+      content.add(javax.swing.Box.createVerticalStrut(10));
 
-        contentPane.add( message, BorderLayout.NORTH );
-        contentPane.add( content, BorderLayout.CENTER );
-        contentPane.add( buttonArea, BorderLayout.SOUTH );
+      selectionRegion.add(javax.swing.Box.createHorizontalStrut(10));
+      selectionRegion.add(radioPanel);
+      selectionRegion.add(new javax.swing.JScrollPane(_description));
+      selectionRegion.add(javax.swing.Box.createHorizontalStrut(10));
 
-        setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
-        pack();
-        centreWindow( parentFrame );
-    }
+      content.add(selectionRegion);
 
+      contentPane.add(message, BorderLayout.NORTH);
+      contentPane.add(content, BorderLayout.CENTER);
+      contentPane.add(buttonArea, BorderLayout.SOUTH);
 
-    /** Get the plug-in selected by the user.
-     * @return The selected plug-in or <code>null</code> if none
-     *         was selected.
-     */
-    public Class<TaxonomyPlugin> getSelectedPlugin()
-    {
-    	return _selectedPlugin;
-    }
+      setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+      pack();
+      centreWindow(parentFrame);
+   }
 
+   /**
+    * Get the plug-in selected by the user.
+    * 
+    * @return The selected plug-in or <code>null</code> if none was selected.
+    */
+   public Class<TaxonomyPlugin> getSelectedPlugin() {
 
-    /** React to the dialog's buttons.
-     * It react to events from the plug-in selection radio buttons and
-     * the <i>OK</i> and <i>CANCEL</i> buttons.
-     */
-    public void actionPerformed( java.awt.event.ActionEvent event )
-    {
-        javax.swing.AbstractButton button = (javax.swing.AbstractButton)
-                                            event.getSource();
-        if( button == _okButton )
-            // ok button pressed
-        {
-            setVisible( false );
-        }
-        else if( button == _cancelButton )
-            // cancel button pressed
-        {
-            _selectedPlugin = null;
-            setVisible( false );
-        }
-        else // radio button selected
-        {
-            String className = button.getActionCommand();
+      return _selectedPlugin;
+   }
 
-            PluginDescription description = _descriptions.get( className );
+   /**
+    * React to the dialog's buttons. It react to events from the plug-in
+    * selection radio buttons and the <i>OK</i> and <i>CANCEL</i> buttons.
+    */
+   public void actionPerformed( java.awt.event.ActionEvent event) {
 
-            if( description != null )
-            {
-                _description.setText( description.getDescription() );
-                //_description.revalidate();
-            }
-            _selectedPlugin = _plugins.get( className );
-        }
-    }
+      javax.swing.AbstractButton button = (javax.swing.AbstractButton) event.getSource();
+      if (button == _okButton)
+      // ok button pressed
+      {
+         setVisible(false);
+      }
+      else if (button == _cancelButton)
+      // cancel button pressed
+      {
+         _selectedPlugin = null;
+         setVisible(false);
+      }
+      else // radio button selected
+      {
+         String className = button.getActionCommand();
 
-    ////////////////////////
-    // Private operations
-    ////////////////////////
+         PluginDescription description = _descriptions.get(className);
 
-    private void centreWindow( javax.swing.JFrame parentFrame )
-    {
-        Point parentLocation = parentFrame.getLocation();
+         if (description != null) {
+            _description.setText(description.getDescription());
+            // _description.revalidate();
+         }
+         _selectedPlugin = _plugins.get(className);
+      }
+   }
 
-        Dimension parentSize = parentFrame.getSize();
+   // //////////////////////
+   // Private operations
+   // //////////////////////
 
-        int parentPosX = (int) parentLocation.getX();
-        int parentPosY = (int) parentLocation.getY();
-        int parentSizeX = (int) parentSize.getWidth();
-        int parentSizeY = (int) parentSize.getHeight();
-        int sizeX = (int) getSize().getWidth();
-        int sizeY = (int) getSize().getHeight();
+   private void centreWindow( javax.swing.JFrame parentFrame) {
 
-        int posX = parentPosX + (parentSizeX - sizeX)/2;
-        int posY = parentPosY + (parentSizeY - sizeY)/2;
+      Point parentLocation = parentFrame.getLocation();
 
-        setLocation( posX, posY );
-    }
+      Dimension parentSize = parentFrame.getSize();
 
+      int parentPosX = (int) parentLocation.getX();
+      int parentPosY = (int) parentLocation.getY();
+      int parentSizeX = (int) parentSize.getWidth();
+      int parentSizeY = (int) parentSize.getHeight();
+      int sizeX = (int) getSize().getWidth();
+      int sizeY = (int) getSize().getHeight();
 
-    private void iniDescriptions( ArrayList<Class<TaxonomyPlugin>> classNames, ArrayList<Class<PluginDescription>> descriptions )
-    {
-        try
-        {
-            _descriptions = new HashMap< String, PluginDescription>();
-            _plugins = new HashMap< String, Class<TaxonomyPlugin>>();
+      int posX = parentPosX + (parentSizeX - sizeX) / 2;
+      int posY = parentPosY + (parentSizeY - sizeY) / 2;
 
-            for( int i = 0; i < classNames.size(); ++i )
-            {
-                Class<TaxonomyPlugin> c = classNames.get( i );
-                _descriptions.put( c.getName(), null );
-                _plugins.put( c.getName(), c );
-            }
+      setLocation(posX, posY);
+   }
 
-            for( int i = 0; i < classNames.size(); ++i )
-            {
-                Class<PluginDescription> descriptionClass = descriptions.get( i );
+   private void iniDescriptions( ArrayList<Class<TaxonomyPlugin>> classNames, ArrayList<Class<PluginDescription>> descriptions) {
 
-                PluginDescription desc = descriptionClass.newInstance();
+      try {
+         _descriptions = new HashMap<String, PluginDescription>();
+         _plugins = new HashMap<String, Class<TaxonomyPlugin>>();
 
-                _descriptions.put( desc.getPluginClassName(), desc );
-            }
-        }
-        catch( Exception ex )
-        {
-            ex.printStackTrace();
-            System.exit( 1 );
-        }
-    }
+         for (int i = 0; i < classNames.size(); ++i) {
+            Class<TaxonomyPlugin> c = classNames.get(i);
+            _descriptions.put(c.getName(), null);
+            _plugins.put(c.getName(), c);
+         }
+
+         for (int i = 0; i < classNames.size(); ++i) {
+            Class<PluginDescription> descriptionClass = descriptions.get(i);
+
+            PluginDescription desc = descriptionClass.newInstance();
+
+            _descriptions.put(desc.getPluginClassName(), desc);
+         }
+      }
+      catch (Exception ex) {
+         ex.printStackTrace();
+         System.exit(1);
+      }
+   }
 }
-

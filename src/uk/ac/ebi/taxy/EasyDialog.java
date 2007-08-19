@@ -1,232 +1,207 @@
 package uk.ac.ebi.taxy;
 
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
 /**
  * This class defines a flexible dialog with some functions that ease the
  * construction of tailored dialogs.
  */
-public class EasyDialog extends javax.swing.JDialog
-{
-    //////////////////////////////////
-    // Private Attributes
-    //////////////////////////////////
+@SuppressWarnings("serial")
+public class EasyDialog extends javax.swing.JDialog {
 
-    private java.awt.Frame _parent;
+   private java.awt.Frame _parent;
 
-    private javax.swing.JButton _cancelButton;
+//   private javax.swing.JButton _cancelButton;
 
-    private javax.swing.JLabel _iconLabel;
+   private javax.swing.JLabel _iconLabel;
 
-    private javax.swing.JTextArea _text;
+   private javax.swing.JTextArea _text;
 
-    private javax.swing.Box _buttonRegion;
+   private javax.swing.Box _buttonRegion;
 
-    private javax.swing.Box _messageRegion;
+   private javax.swing.Box _messageRegion;
 
-    private javax.swing.Box _inputFieldRegion;
+   private javax.swing.Box _inputFieldRegion;
 
-    private javax.swing.Box _inputLabelRegion;
+   private javax.swing.Box _inputLabelRegion;
 
-    private javax.swing.Box _centralRegion;
+   private javax.swing.Box _centralRegion;
 
+   // /////////////////////////////
+   // Public Operations
+   // /////////////////////////////
 
+   /**
+    * Constructs a new dialog with the specified frame parent, modal mode,
+    * title, message, and icon
+    */
+   public EasyDialog( java.awt.Frame parent, boolean isModal, String title, String message, String iconPath) {
 
-    ///////////////////////////////
-    // Public Operations
-    ///////////////////////////////
+      // non-modal dialog
+      super(parent, title, isModal);
 
-    /** Constructs a new dialog with the specified frame parent,
-     * modal mode, title, message, and icon
-     */
-    public EasyDialog( java.awt.Frame parent,
-                       boolean isModal,
-                       String title,
-                       String message,
-                       String iconPath )
-    {
-        // non-modal dialog
-        super( parent, title, isModal );
+      _parent = parent;
 
-        _parent = parent;
+      // setDefaultCloseOperation(
+      // javax.swing.JDialog.DO_NOTHING_ON_CLOSE );
 
-        //setDefaultCloseOperation(
-        //    javax.swing.JDialog.DO_NOTHING_ON_CLOSE );
+      // dialog's message region composition
 
+      _messageRegion = new javax.swing.Box(javax.swing.BoxLayout.X_AXIS);
 
-        // dialog's message region composition
+      // icon composition
 
-        _messageRegion =
-            new javax.swing.Box( javax.swing.BoxLayout.X_AXIS );
+      if (iconPath != null) {
+         javax.swing.ImageIcon icon = new javax.swing.ImageIcon(iconPath);
 
+         _iconLabel = new javax.swing.JLabel(icon);
 
-        // icon composition
+         _messageRegion.add(_iconLabel);
+      }
 
-        if( iconPath != null )
-        {
-            javax.swing.ImageIcon icon =
-                new javax.swing.ImageIcon( iconPath );
+      // text composition
 
-            _iconLabel = new javax.swing.JLabel( icon );
+      _text = new javax.swing.JTextArea(message);
+      // _text = new javax.swing.JEditorPane( "text/plain", message );
 
+      _text.setEditable(false);
 
-            _messageRegion.add( _iconLabel );
-        }
+      _messageRegion.add(_text);
 
-        // text composition
+      // dialog's south region composition
 
-        _text = new javax.swing.JTextArea( message );
-        //_text = new javax.swing.JEditorPane( "text/plain", message );
+      _buttonRegion = new javax.swing.Box(javax.swing.BoxLayout.X_AXIS);
 
-        _text.setEditable( false );
+      // we use JPanel for central alignment of _buttonRegion
 
-        _messageRegion.add( _text );
+      javax.swing.JPanel panel = new javax.swing.JPanel();
 
+      panel.add(_buttonRegion);
 
+      getContentPane().add(panel, java.awt.BorderLayout.SOUTH);
 
-        // dialog's south region composition
+      // dialog's input region composition
 
-        _buttonRegion =
-            new javax.swing.Box( javax.swing.BoxLayout.X_AXIS );
+      javax.swing.JPanel inputPanel = new javax.swing.JPanel();
 
-        // we use JPanel for central alignment of _buttonRegion
+      _inputFieldRegion = javax.swing.Box.createVerticalBox();
 
-        javax.swing.JPanel panel = new javax.swing.JPanel();
+      _inputLabelRegion = javax.swing.Box.createVerticalBox();
 
-        panel.add( _buttonRegion );
+      inputPanel.add(_inputFieldRegion, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add( panel, java.awt.BorderLayout.SOUTH );
+      inputPanel.add(_inputLabelRegion, java.awt.BorderLayout.CENTER);
 
+      _centralRegion = javax.swing.Box.createVerticalBox();
 
-        // dialog's input region composition
+      _centralRegion.add(_messageRegion);
 
-        javax.swing.JPanel inputPanel = new javax.swing.JPanel();
+      _centralRegion.add(inputPanel);
 
-        _inputFieldRegion = javax.swing.Box.createVerticalBox();
+      getContentPane().add(_centralRegion, java.awt.BorderLayout.CENTER);
 
-        _inputLabelRegion = javax.swing.Box.createVerticalBox();
+      pack();
 
-        inputPanel.add( _inputFieldRegion, java.awt.BorderLayout.CENTER );
+      centerWindow();
+   }
 
-        inputPanel.add( _inputLabelRegion, java.awt.BorderLayout.CENTER );
+   /**
+    * Sets the content of the central region of the dialog.
+    */
+   public void setCentralRegion( java.awt.Container c) {
 
+      getContentPane().remove(_centralRegion);
+      getContentPane().add(c, java.awt.BorderLayout.CENTER);
+   }
 
-        _centralRegion = javax.swing.Box.createVerticalBox();
+   /**
+    * Adds a button to the button region of the dialog.
+    */
+   public JButton addButton( String buttonName, ActionListener listener)
 
-        _centralRegion.add( _messageRegion );
+   {
 
-        _centralRegion.add( inputPanel );
+      javax.swing.JButton button = new javax.swing.JButton(buttonName);
 
-        getContentPane().add( _centralRegion, java.awt.BorderLayout.CENTER );
+      button.addActionListener(listener);
 
-        pack();
+      _buttonRegion.add(button);
 
-        centerWindow();
-    }
+      pack();
 
+      return button;
+   }
 
-    /**
-     * Sets the content of the central region of the dialog.
-     */
-    public void setCentralRegion( java.awt.Container c )
-    {
-        getContentPane().remove( _centralRegion );
-        getContentPane().add( c, java.awt.BorderLayout.CENTER );
-    }
+   /**
+    * Adds an input field to the input field region of the dialog.
+    */
+   public JTextField addInputField( String inputName, ActionListener listener, boolean isPasswordField) {
 
-    /** Adds a button to the button region of the dialog.
-     */
-    public JButton addButton( String buttonName,
-                              ActionListener listener )
+      javax.swing.JLabel label = new javax.swing.JLabel(inputName);
 
-    {
-        javax.swing.JButton button =
-            new javax.swing.JButton( buttonName );
+      _inputLabelRegion.add(label);
 
-        button.addActionListener( listener );
+      javax.swing.JTextField inputField = null;
 
-        _buttonRegion.add( button );
+      if (isPasswordField) {
+         inputField = new javax.swing.JPasswordField(10);
 
-        pack();
+         ((javax.swing.JPasswordField) inputField).setEchoChar('*');
+      }
+      else {
+         inputField = new javax.swing.JTextField(10);
+      }
 
-        return button;
-    }
+      if (listener != null) {
+         inputField.addActionListener(listener);
+      }
 
-    /** Adds an input field to the input field region of the dialog.
-     */
-    public JTextField addInputField( String inputName,
-                                     ActionListener listener,
-                                     boolean isPasswordField )
-    {
-        javax.swing.JLabel label = new javax.swing.JLabel( inputName );
+      _inputFieldRegion.add(inputField);
 
-        _inputLabelRegion.add( label );
+      pack();
 
+      return inputField;
+   }
 
-        javax.swing.JTextField inputField = null;
+   /**
+    * Shows the dialog centered on the screen.
+    */
+   public void setVisible( boolean visible) {
 
-        if( isPasswordField )
-        {
-            inputField = new javax.swing.JPasswordField( 10 );
+      centerWindow();
 
-            ((javax.swing.JPasswordField) inputField).setEchoChar( '*' );
-        }
-        else
-        {
-            inputField = new javax.swing.JTextField( 10 );
-        }
+      super.setVisible(visible);
+   }
 
-        if( listener != null )
-        {
-            inputField.addActionListener( listener );
-        }
+   /**
+    * Centers the dialog on the screen.
+    */
+   public void centerWindow() {
 
-        _inputFieldRegion.add( inputField );
+      java.awt.Point location = null;
 
-        pack();
+      java.awt.Dimension parentDim = null;
 
-        return inputField;
-    }
+      if (_parent != null) {
+         location = _parent.getLocation();
 
-    /** Shows the dialog centered on the screen.
-     */
-    public void setVisible(boolean visible)
-    {
-        centerWindow();
+         parentDim = _parent.getSize();
+      }
+      else {
+         location = new java.awt.Point(0, 0);
 
-        super.setVisible(visible);
-    }
+         parentDim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+      }
 
+      java.awt.Dimension dim = getSize();
 
-    /** Centers the dialog on the screen.
-     */
-    public void centerWindow()
-    {
-        java.awt.Point location = null;
+      int offsetX = (parentDim.width - dim.width) / 2;
 
-        java.awt.Dimension parentDim = null;
+      int offsetY = (parentDim.height - dim.height) / 2;
 
-        if( _parent != null )
-        {
-            location = _parent.getLocation();
-
-            parentDim = _parent.getSize();
-        }
-        else
-        {
-            location = new java.awt.Point( 0, 0 );
-
-            parentDim = java.awt.Toolkit.getDefaultToolkit( ).getScreenSize();
-        }
-
-        java.awt.Dimension dim = getSize();
-
-        int offsetX = ( parentDim.width -  dim.width ) / 2;
-
-        int offsetY = ( parentDim.height -  dim.height ) / 2;
-
-        setLocation( location.x + offsetX, location.y + offsetY );
-    }
+      setLocation(location.x + offsetX, location.y + offsetY);
+   }
 }
-
