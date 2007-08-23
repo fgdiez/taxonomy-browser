@@ -3,18 +3,18 @@
 
 [Setup]
 AppName=Taxy
-AppVerName=Taxy v1.1.0-alpha3
+AppVerName=Taxy v1.1.0-alpha4
 AppPublisher=Universidad de Malaga
 AppPublisherURL=http://www.bitlab.es
 AppSupportURL=http://www.bitlab.es
 AppUpdatesURL=http://www.bitlab.es
-DefaultDirName={pf}\Taxy1.1.0
-DefaultGroupName=Taxy
+DefaultDirName={pf}\Taxy1.1.0-alpha4
+DefaultGroupName=Taxy1.1.0-alpha4
 AllowNoIcons=yes
-OutputBaseFilename=Taxy1.1.0-alpha3_setup
+OutputBaseFilename=Taxy1.1.0-alpha4_setup
 Compression=lzma
 SolidCompression=yes
-SourceDir=release
+SourceDir=release\
 LicenseFile=LICENSE
 
 [Languages]
@@ -26,6 +26,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "taxy.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "lib/taxy.jar"; DestDir: "{app}\lib"; Flags: ignoreversion
 Source: "lib/repo-persistence-client.jar"; DestDir: "{app}\lib"; Flags: ignoreversion
 Source: "lib/axiom-api-1.2.4.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/axiom-impl-1.2.4.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
@@ -36,6 +37,9 @@ Source: "lib/commons-logging-1.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversio
 Source: "lib/jibx-run-1.1.4.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/wsdl4j-1.6.2.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/XmlSchema-1.3.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
+Source: "lib/stax-api-1.0.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
+Source: "lib/wstx-asl-3.2.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
+Source: "lib/BrowserLauncher2-12.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "plugins/acgtRepoPlugin.jar"; DestDir: "{app}/plugins"; Flags: ignoreversion
 Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files

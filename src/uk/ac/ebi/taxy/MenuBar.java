@@ -1,10 +1,8 @@
 package uk.ac.ebi.taxy;
 
-import java.awt.Desktop;
+//import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
@@ -13,6 +11,10 @@ import javax.swing.JEditorPane;
 import javax.swing.JMenu;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
+
+import edu.stanford.ejalbert.BrowserLauncher;
+import edu.stanford.ejalbert.exception.BrowserLaunchingInitializingException;
+import edu.stanford.ejalbert.exception.UnsupportedOperatingSystemException;
 
 /**
  * This class defines the application's menus. This class creates the
@@ -140,6 +142,8 @@ public class MenuBar extends javax.swing.JMenuBar {
 
       private JEditorPane _editorPane;
 
+      private BrowserLauncher launcher = null;
+      
 //      private java.net.URL _mainURL;
 
       /** Contructs a new "about" action. */
@@ -147,6 +151,16 @@ public class MenuBar extends javax.swing.JMenuBar {
 
          super("About");
 
+         try {
+			launcher = new BrowserLauncher();
+		} catch (BrowserLaunchingInitializingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedOperatingSystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         
          // Create an editor pane.
          _editorPane = new JEditorPane();
          _editorPane.setEditable(false);
@@ -220,17 +234,19 @@ public class MenuBar extends javax.swing.JMenuBar {
 
          if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 
-            try {
-               Desktop.getDesktop().browse(e.getURL().toURI());
-            }
-            catch (IOException e1) {
-               // TODO Auto-generated catch block
-               e1.printStackTrace();
-            }
-            catch (URISyntaxException e1) {
-               // TODO Auto-generated catch block
-               e1.printStackTrace();
-            }
+        	 logger.info("hyperlink pressed");
+//            try {
+//               Desktop.getDesktop().browse(e.getURL().toURI());
+        	 launcher.openURLinBrowser(e.getURL().toString());
+//            }
+//            catch (IOException e1) {
+//               // TODO Auto-generated catch block
+//               e1.printStackTrace();
+//            }
+//            catch (URISyntaxException e1) {
+//               // TODO Auto-generated catch block
+//               e1.printStackTrace();
+//            }
             // try {
             // Desktop.getDesktop().browse( new URI(e.getURL().toString()));
             // }

@@ -114,7 +114,11 @@
 
 		<javac srcdir="${src}" destdir="${build}" debug="on" deprecation="on"
              includes="uk/ac/ebi/taxy/*.java,
-                       uk/ac/ebi/util/*.java" />
+                       uk/ac/ebi/util/*.java">
+		  <classpath>
+		    <fileset dir="lib" includes="*.jar"></fileset>
+		  </classpath>
+		</javac>
 	</target>
 
 
