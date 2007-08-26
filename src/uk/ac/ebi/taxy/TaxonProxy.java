@@ -1,6 +1,7 @@
 package uk.ac.ebi.taxy;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -27,6 +28,8 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
 
    private String _id;
 
+   static ImageIcon LEAF_ICON;
+   static ImageIcon PARENT_ICON;
    // ///////////////////////
    // parent attributes
 
@@ -39,7 +42,7 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
    // ///////////////////////
    // lineage attributes
 
-   private ArrayList<TaxonProxy> _parents;
+   private List<TaxonProxy> _parents;
 
    private String _lineage;
 
@@ -76,6 +79,8 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
     */
    public TaxonProxy( String id, String name, TaxonomyPlugin taxonomyProvider) {
 
+      LEAF_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("closedFolder.gif"));
+      PARENT_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("openFolder.gif"));
       _taxonomyProvider = taxonomyProvider;
 
       _id = id;
@@ -108,7 +113,7 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
     * 
     * @return The names of the properties associated with this taxon.
     */
-   public abstract ArrayList<String> getPropertyNames();
+   public abstract List<String> getPropertyNames();
 
    // public Vector getPropertyNames()
    // {
@@ -185,7 +190,7 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
     * 
     * @return A collection of <code>TaxonProxy</code> with all the parents.
     */
-   public ArrayList<TaxonProxy> getParents() {
+   public List<TaxonProxy> getParents() {
 
       if (_parents == null) {
          java.util.LinkedList<TaxonProxy> list = new java.util.LinkedList<TaxonProxy>();
@@ -211,7 +216,7 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
       if (_lineage == null) {
          StringBuffer lineage = new StringBuffer();
 
-         ArrayList<TaxonProxy> parents = getParents();
+         List<TaxonProxy> parents = getParents();
 
          for (int i = 0; i < parents.size(); ++i) {
             TaxonProxy parent = parents.get(i);
@@ -246,7 +251,7 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
     * Returns the collection of <code>TaxonProxy</code> that are children of
     * this taxon.
     */
-   public abstract ArrayList<TaxonProxy> getChildren();
+   public abstract List<TaxonProxy> getChildren();
 
    // {
    // if( _children == null )
@@ -258,5 +263,9 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
    // return _children;
    // }
 
-   public abstract ImageIcon getIcon();
+   public ImageIcon getIcon() {
+
+      if (hasChildren()) return PARENT_ICON;
+      return LEAF_ICON;
+   }
 }

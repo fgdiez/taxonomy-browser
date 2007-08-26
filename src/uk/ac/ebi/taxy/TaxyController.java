@@ -2,6 +2,7 @@ package uk.ac.ebi.taxy;
 
 import java.awt.Cursor;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import uk.ac.ebi.util.Debug;
@@ -93,12 +94,13 @@ public class TaxyController {
 
          TaxonomyPlugin selectedPlugin = selectedPluginClass.newInstance();
 
-         selectedPlugin.setFrameParent(_ui);
+         selectedPlugin.setParentFrame(_ui);
 
          return selectedPlugin;
       }
       catch (Throwable ex) {
-         Debug.TRACE(ex.getMessage());
+         ex.printStackTrace();
+         Debug.ERROR(ex.getMessage());
          return null;
       }
    }
@@ -109,18 +111,18 @@ public class TaxyController {
     */
    public void connectToPlugin() {
 
+      _ui.setEnabled(false);
       TaxonomyPlugin plugin = resolvePlugins();
 
       if (plugin != null) {
-         _ui.setEnabled(false);
          Cursor currentCursor = _ui.getCursor();
          _ui.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
          if (plugin.connect()) {
             initializeViews(plugin);
+            _ui.setEnabled(true);
          }
          _ui.setCursor(currentCursor);
-         _ui.setEnabled(true);
       }
       else {
          logger.severe("Cannot resolve pluggins");
@@ -178,7 +180,7 @@ public class TaxyController {
       _ui.clearViews();
       _taxonomyPlugin = plugin;
 
-      ArrayList<TaxonProxy> rootChildren = plugin.getRoot().getChildren();
+      List<TaxonProxy> rootChildren = plugin.getRoot().getChildren();
 
       TaxonProxy firstChild = rootChildren.get(0);
 

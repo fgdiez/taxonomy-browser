@@ -29,11 +29,11 @@ public class MenuBar extends javax.swing.JMenuBar {
     * Contructs a new menu bar that will operate over the specified
     * <code>BrowserController</code>.
     */
-   public MenuBar( TaxyController controller) {
+   public MenuBar(TaxyController controller) {
 
       super();
 
-//      _controller = controller;
+      // _controller = controller;
 
       JMenu fileMenu = new JMenu("File");
 
@@ -57,7 +57,7 @@ public class MenuBar extends javax.swing.JMenuBar {
 
       private TaxyController _controller;
 
-      public ConnectionAction( TaxyController controller) {
+      public ConnectionAction(TaxyController controller) {
 
          super("Connect");
 
@@ -70,7 +70,7 @@ public class MenuBar extends javax.swing.JMenuBar {
        * @param e
        *           event.
        */
-      public void actionPerformed( ActionEvent e) {
+      public void actionPerformed(ActionEvent e) {
 
          _controller.connectToPlugin();
       }
@@ -84,7 +84,7 @@ public class MenuBar extends javax.swing.JMenuBar {
 
       private TaxyController _controller;
 
-      public DisconnectionAction( TaxyController controller) {
+      public DisconnectionAction(TaxyController controller) {
 
          super("Disconnect");
 
@@ -97,7 +97,7 @@ public class MenuBar extends javax.swing.JMenuBar {
        * @param e
        *           event.
        */
-      public void actionPerformed( ActionEvent e) {
+      public void actionPerformed(ActionEvent e) {
 
          _controller.disconnect();
       }
@@ -111,7 +111,7 @@ public class MenuBar extends javax.swing.JMenuBar {
 
       private TaxyController _controller;
 
-      public ExitAction( TaxyController controller) {
+      public ExitAction(TaxyController controller) {
 
          super("Exit");
 
@@ -124,7 +124,7 @@ public class MenuBar extends javax.swing.JMenuBar {
        * @param e
        *           event.
        */
-      public void actionPerformed( ActionEvent e) {
+      public void actionPerformed(ActionEvent e) {
 
          _controller.exit();
       }
@@ -143,8 +143,8 @@ public class MenuBar extends javax.swing.JMenuBar {
       private JEditorPane _editorPane;
 
       private BrowserLauncher launcher = null;
-      
-//      private java.net.URL _mainURL;
+
+      // private java.net.URL _mainURL;
 
       /** Contructs a new "about" action. */
       public AboutAction() {
@@ -152,15 +152,15 @@ public class MenuBar extends javax.swing.JMenuBar {
          super("About");
 
          try {
-			launcher = new BrowserLauncher();
-		} catch (BrowserLaunchingInitializingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedOperatingSystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-         
+            launcher = new BrowserLauncher();
+         } catch (BrowserLaunchingInitializingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         } catch (UnsupportedOperatingSystemException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         }
+
          // Create an editor pane.
          _editorPane = new JEditorPane();
          _editorPane.setEditable(false);
@@ -187,24 +187,22 @@ public class MenuBar extends javax.swing.JMenuBar {
       /**
        * Sets the page to be shown as the "About" information.
        */
-      public void setPage( java.net.URL url) {
+      public void setPage(java.net.URL url) {
 
          try {
             if (url != null) {
                _editorPane.setPage(url);
             }
-         }
-         catch (Exception ex) {
+         } catch (Exception ex) {
             logger.severe("Could not set the page " + url.toString());
          }
       }
 
-      public void actionPerformed( ActionEvent e) {
+      public void actionPerformed(ActionEvent e) {
 
          if (e.getSource() == _okButton) {
             _dialog.setVisible(false);
-         }
-         else // source is its menu item
+         } else // source is its menu item
          {
             // setPage( getMainURL() );
             _dialog.pack();
@@ -223,38 +221,17 @@ public class MenuBar extends javax.swing.JMenuBar {
             java.net.URL url = getClass().getClassLoader().getResource("uk/ac/ebi/taxy/about.html");
 
             return url;
-         }
-         catch (Exception ex) {
+         } catch (Exception ex) {
             logger.severe("Couldn't create URL: " + urlString);
             return null;
          }
       }
 
-      public void hyperlinkUpdate( HyperlinkEvent e) {
+      public void hyperlinkUpdate(HyperlinkEvent e) {
 
          if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-
-        	 logger.info("hyperlink pressed");
-//            try {
-//               Desktop.getDesktop().browse(e.getURL().toURI());
-        	 launcher.openURLinBrowser(e.getURL().toString());
-//            }
-//            catch (IOException e1) {
-//               // TODO Auto-generated catch block
-//               e1.printStackTrace();
-//            }
-//            catch (URISyntaxException e1) {
-//               // TODO Auto-generated catch block
-//               e1.printStackTrace();
-//            }
-            // try {
-            // Desktop.getDesktop().browse( new URI(e.getURL().toString()));
-            // }
-            // catch (IOException e1) {
-            // e1.printStackTrace();
-            // } catch (URISyntaxException e1) {
-            // e1.printStackTrace();
-            // }
+            logger.info("hyperlink pressed");
+            launcher.openURLinBrowser(e.getURL().toString());
          }
       }
    };

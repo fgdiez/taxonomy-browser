@@ -7,7 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -87,7 +87,7 @@ public class TaxonMetadataUI extends JPanel {
 
    private Component createTaxonBag( TaxonProxy taxon) {
 
-      ArrayList<String> propertyNames = taxon.getPropertyNames();
+      List<String> propertyNames = taxon.getPropertyNames();
 
       JPanel bag = new JPanel(new GridBagLayout());
       GridBagConstraints c = new GridBagConstraints();

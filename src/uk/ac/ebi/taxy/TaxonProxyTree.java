@@ -1,8 +1,8 @@
 package uk.ac.ebi.taxy;
 
 import java.awt.Component;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -124,7 +124,7 @@ public class TaxonProxyTree extends JTree {
             _hash.put(parentID, parentNode);
          }
 
-         ArrayList<TaxonProxy> childrenTaxa = parentTaxon.getChildren();
+         List<TaxonProxy> childrenTaxa = parentTaxon.getChildren();
          Debug.TRACE("TaxonProxyTree.setTaxon: " + childrenTaxa.size() + " children");
 
          java.util.Collections.sort(childrenTaxa, _taxonComparator);
@@ -183,7 +183,7 @@ public class TaxonProxyTree extends JTree {
 
       TaxonProxy taxon = (TaxonProxy) node.getUserObject();
 
-      ArrayList<TaxonProxy> children = taxon.getChildren();
+      List<TaxonProxy> children = taxon.getChildren();
 
       java.util.Collections.sort(children, _taxonComparator);
 

@@ -30,7 +30,7 @@
           description="Launch Taxy" >
 
 		<java classname="uk.ac.ebi.taxy.TaxyUI" fork="true" dir="${release}"
-            maxmemory="200M" >
+            maxmemory="300M" >
 			<arg line="${args}" />
 			<classpath >
 				<fileset dir="${release}/lib"/>
@@ -41,7 +41,7 @@
 
 
 	<target name="release"
-          depends="build.acgtrepo"
+          depends="build.acgtrepo, build.ncbitaxa"
           description="Generate the release binaries" >
 
 		<tstamp/>
@@ -56,8 +56,8 @@
 		</copy>
 
 		<mkdir dir="${release}/plugins"/>
-		<!--      <copy file="${build}/ncbiPlugin.jar" todir="${release}/plugins" />-->
-		<copy file="${build}/acgtRepoPlugin.jar" todir="${release}/plugins" />
+    <copy file="${build}/ncbitaxaPlugin.jar" todir="${release}/plugins" />
+    <copy file="${build}/acgtRepoPlugin.jar" todir="${release}/plugins" />
 
 	</target>
 
@@ -87,6 +87,30 @@
 	</target>
 
 
+  <target name="build.ncbitaxa"
+          depends="compile.ncbitaxa"
+          description="Creates NCBI taxonomy Plug-in jar" >
+
+    <tstamp/>
+    <jar jarfile="${build}/ncbitaxaPlugin.jar" basedir="${build}"
+           includes="**/ncbitaxa/**" />
+  </target>
+
+
+  <target name="compile.ncbitaxa"
+          depends="build.core"
+          description="Compiles NCBI Taxonomy plugin" >
+
+    <tstamp/>
+    <javac srcdir="${src}" destdir="${build}" debug="on" deprecation="on"
+             includes="**/ncbitaxa/*.java" >
+      <classpath >
+        <fileset dir="lib" includes="**/*.jar"/>
+      </classpath>
+
+    </javac>
+  </target>
+	
 	<target name="build.core"
           depends="compile.core"
           description="Creates taxy.jar (Core jar file)" >

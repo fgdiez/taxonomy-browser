@@ -2,7 +2,6 @@ package org.eu_acgt.taxy.plugin.acgt_services;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
@@ -33,9 +32,11 @@ public class ServiceTaxon extends TaxonProxy {
    static final String OPER_DESC = "Description";
    static final String OPER_HELP = "Help";
    static final String OPER_NUM_PARAMS = "#Params";
+   static final String[] operColumnNames = {OPER_ID, OPER_NAME, OPER_DESC, OPER_HELP, OPER_NUM_PARAMS};
 
    static final String LOCATION_URI = "EndPointURI";
    static final String LOCATION_STATUS = "Status";
+   static final String[] locationColumnNames = {LOCATION_URI, LOCATION_STATUS};
    static ImageIcon ICON;
 
    public static final ArrayList<String> propertyNames = new ArrayList<String>(3);
@@ -89,13 +90,7 @@ public class ServiceTaxon extends TaxonProxy {
          return new TaxonProperty(PROP_CREATED, "" + svc.getCreated());
       }
       else if (propertyName.equals(PROP_OPERATIONS)) {
-         Vector<String> columnNames = new Vector<String>();
-         columnNames.add(OPER_ID);
-         columnNames.add(OPER_NAME);
-         columnNames.add(OPER_DESC);
-         columnNames.add(OPER_HELP);
-         columnNames.add(OPER_NUM_PARAMS);
-         String[][] rows = new String[svc.getOperations().size()][columnNames.size()];
+         String[][] rows = new String[svc.getOperations().size()][operColumnNames.length];
          int i = 0;
          for (Iterator<Operation> operIter = svc.getOperations().iterator(); operIter.hasNext();) {
             Operation oper = operIter.next();
@@ -107,14 +102,11 @@ public class ServiceTaxon extends TaxonProxy {
             rows[i][j++] = String.valueOf(oper.getParameters().size());
             i++;
          }
-         Table operTable = new Table(columnNames, rows);
+         Table operTable = new Table(operColumnNames, rows);
          return new TaxonProperty(PROP_OPERATIONS, operTable);
       }
       else if (propertyName.equals(PROP_LOCATION)) {
-         Vector<String> columnNames = new Vector<String>();
-         columnNames.add(LOCATION_URI);
-         columnNames.add(LOCATION_STATUS);
-         String[][] rows = new String[svc.getServiceLocations().size()][columnNames.size()];
+         String[][] rows = new String[svc.getServiceLocations().size()][locationColumnNames.length];
          int i = 0;
          for (Iterator<ServiceLocation> locationIter = svc.getServiceLocations().iterator(); locationIter.hasNext();) {
             ServiceLocation location = locationIter.next();
@@ -123,7 +115,7 @@ public class ServiceTaxon extends TaxonProxy {
             rows[i][j++] = location.getServiceStatus();
             i++;
          }
-         Table operTable = new Table(columnNames, rows);
+         Table operTable = new Table(locationColumnNames, rows);
          return new TaxonProperty(PROP_LOCATION, operTable);
       }
       return null;

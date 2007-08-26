@@ -32,7 +32,7 @@ public interface TaxonomyPlugin {
     * @param parent
     *           The parent window.
     */
-   public void setFrameParent( javax.swing.JFrame parent);
+   public void setParentFrame( javax.swing.JFrame parent);
 
    // ////////////////////////
    // Connection operations

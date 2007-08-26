@@ -2,8 +2,6 @@ package org.eu_acgt.taxy.plugin.acgt_services;
 
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-
 import org.eu_acgt.repo.model.FunctionalCategory;
 
 import uk.ac.ebi.taxy.TaxonProperty;
@@ -16,8 +14,6 @@ public class CategoryTaxon extends TaxonProxy {
    static final String PROP_NAME = "Name";
    static final String PROP_DESC = "Description";
    static final String PROP_MAINCAT = "MainCategory";
-   static ImageIcon LEAF_ICON;
-   static ImageIcon PARENT_ICON;
 
    public static final ArrayList<String> propertyNames = new ArrayList<String>(3);
    static {
@@ -36,8 +32,6 @@ public class CategoryTaxon extends TaxonProxy {
       super(id, name, taxonomyProvider);
       this.cat = cat;
       this.parent = parent;
-      LEAF_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("closedFolder.gif"));
-      PARENT_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("openFolder.gif"));
    }
 
    @Override
@@ -86,12 +80,5 @@ public class CategoryTaxon extends TaxonProxy {
    public boolean hasChildren() {
 
       return children != null && children.size() > 0;
-   }
-
-   @Override
-   public ImageIcon getIcon() {
-
-      if (hasChildren()) return PARENT_ICON;
-      return LEAF_ICON;
    }
 }

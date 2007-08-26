@@ -23,7 +23,6 @@ public class AcgtRepoPluginDescription implements uk.ac.ebi.taxy.PluginDescripti
 
       return "DESCRIPTION: \n"
              + "    Provides access to the ACGT Biomedical Services Catalogue.\n\n"
-             + "Plug-in class:\n" + "    " + _pluginClassName + "\n\n" + "Authority:\n"
-             + "    ACGT - University of Malaga \n\n" + "Author:\n" + "    Federico Garcia Diez";
+             + "Plug-in class:\n" + "    " + _pluginClassName;
    }
 }

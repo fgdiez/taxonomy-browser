@@ -1,6 +1,5 @@
 package uk.ac.ebi.util;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.event.TableModelListener;
@@ -12,13 +11,11 @@ import javax.swing.event.TableModelListener;
  * <code>JTable</code>.
  */
 public class Table implements javax.swing.table.TableModel {
-
-   private Logger logger = Logger.getLogger("TaxyCore");
    
-   // private java.util.Vector _rows;
+   private static Logger logger = Logger.getLogger("TaxyCore");
+   
    private String[][] rows;
-
-   private List<String> _columnNames;
+   private String[] _columnNames;
 
    private javax.swing.JTable _jTable;
 
@@ -31,15 +28,13 @@ public class Table implements javax.swing.table.TableModel {
     * @param rows
     *           The table's rows. It is a collection of <code>TableRow</code>.
     */
-   public Table( List<String> columnNames, String[][] rows) {
+   public Table( String[] columnNames, String[][] rows) {
 
       Debug.ASSERT(columnNames != null, "Null column names");
       Debug.ASSERT(rows != null, "Null rows");
 
       this.rows = rows;
-
       _columnNames = columnNames;
-
       _jTable = new javax.swing.JTable(this);
    }
 
@@ -61,12 +56,12 @@ public class Table implements javax.swing.table.TableModel {
 
    public int getColumnCount() {
 
-      return _columnNames.size();
+      return _columnNames.length;
    }
 
    public String getColumnName( int columnIndex) {
 
-      return _columnNames.get(columnIndex);
+      return _columnNames[columnIndex];
    }
 
    public int getRowCount() {
@@ -76,9 +71,6 @@ public class Table implements javax.swing.table.TableModel {
 
    public Object getValueAt( int rowIndex, int columnIndex) {
 
-      // TableRow row = (TableRow) _rows.get( rowIndex );
-
-      // return row.get( columnIndex );
       return rows[rowIndex][columnIndex];
    }
 

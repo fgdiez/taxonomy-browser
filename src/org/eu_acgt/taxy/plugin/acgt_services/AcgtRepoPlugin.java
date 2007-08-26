@@ -154,8 +154,8 @@ public class AcgtRepoPlugin implements TaxonomyPlugin {
       return element.getChildren().size() > 0;
    }
 
-   public void setFrameParent( JFrame parent) {
-
+   public void setParentFrame( JFrame parent) {
+      
    }
 
    public TaxonProxy getRoot() {

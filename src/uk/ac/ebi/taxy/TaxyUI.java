@@ -21,9 +21,9 @@ import uk.ac.ebi.util.Debug;
 @SuppressWarnings("serial")
 public class TaxyUI extends JFrame {
 
-   private static final String WINDOW_TITLE = "Taxy v1.1.0-alpha4";
-
+   public static final String VERSION = "v1.1.0-beta1";
    private static Logger logger = Logger.getLogger("TaxyCore");
+   private static final String WINDOW_TITLE = "Taxy " + VERSION;
    
    /**
     * % of screen size which the application will cover initilialy.
