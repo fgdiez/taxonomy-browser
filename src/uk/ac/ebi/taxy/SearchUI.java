@@ -19,18 +19,10 @@ import uk.ac.ebi.util.Debug;
 @SuppressWarnings("serial")
 public class SearchUI extends JPanel implements ActionListener {
 
-   // /////////////////////
-   // Private Constants
-   // /////////////////////
-
    /**
     * length in characters of _inputField
     */
    private final int TEXT_FIELD_LENGTH = 30;
-
-   // /////////////////////
-   // Private Attributes
-   // /////////////////////
 
    /**
     * Controller of this UI
@@ -51,10 +43,6 @@ public class SearchUI extends JPanel implements ActionListener {
     * Combo box for selection of search type.
     */
    private JComboBox _queryTypes;
-
-   // ////////////////////////
-   // Public Operations
-   // ////////////////////////
 
    /**
     * Constructs a new search UI that operates over the specified
@@ -90,7 +78,6 @@ public class SearchUI extends JPanel implements ActionListener {
       for (int i = 0; i < components.length; i++) {
          components[i].setEnabled(enabled);
       }
-
    }
 
    /**
@@ -124,11 +111,7 @@ public class SearchUI extends JPanel implements ActionListener {
          Debug.TRACE("ERROR: Unknown event");
       }
 
-   } // operation actionPerformed
-
-   // /////////////////////
-   // Private Operations
-   // /////////////////////
+   } 
 
    /**
     * Composes the graphical elements of this UI component.
@@ -144,7 +127,7 @@ public class SearchUI extends JPanel implements ActionListener {
 
       _inputField.addActionListener(this);
 
-      _queryTypes = new JComboBox(SearchType.createArray());
+      _queryTypes = new JComboBox(SearchType.ALL);
 
       // add elements
       add(new JLabel("Search Form"), BorderLayout.NORTH);

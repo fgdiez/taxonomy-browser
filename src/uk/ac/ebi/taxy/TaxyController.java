@@ -171,6 +171,14 @@ public class TaxyController {
       _ui.showInformativeDialog(title, message);
    }
 
+   public void setWaitCursor() {
+      _ui.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+   }
+   
+   public void setDefaultCursor() {
+      _ui.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+   }
+
    // ////////////////////////
    // Private operations
    // ////////////////////////

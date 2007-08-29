@@ -16,7 +16,7 @@ public class NCBIPluginDescription
 
     public String getName()
     {
-        return "Slick Access to NCBI Taxonomy Flat-Files";
+        return "NCBI Species Taxonomy";
     }
 
     public String getDescription()
@@ -29,7 +29,7 @@ public class NCBIPluginDescription
             + "and loads the taxonomic information into memory, so that it "
             + "is ready to be queried. It requires to have the NCBI taxonomy "
             + "dump file downloaded and unziped somewhere locally in your computer.\n\n"
-            + "PLUGIN CLASS:\n"
+            + "Plug-in class:\n"
             + "    " + _pluginClassName + "\n\n";
     }
 }

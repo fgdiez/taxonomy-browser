@@ -111,7 +111,7 @@ public class Table implements javax.swing.table.TableModel {
       
       for(int j = 0; j < _jTable.getColumnCount(); ++j) {
          int columnWidth = (maxColumnCharSize[j] * tableWidth) / maxTotalCharSize;
-         logger.info("columnWidth: " + columnWidth);
+//         logger.info("columnWidth: " + columnWidth);
          if(columnWidth < 30) columnWidth = 30;
          _jTable.getColumnModel().getColumn(j).setPreferredWidth(columnWidth);
       }
