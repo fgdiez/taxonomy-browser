@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.eu_acgt.repo.client.ManagerException;
 import org.eu_acgt.repo.client.RepoPersistenceWSClient;
@@ -27,7 +29,8 @@ public class AcgtRepoPlugin implements TaxonomyPlugin {
    FunctionalCategory root;
    HashMap<String, TaxonProxy> taxa = new HashMap<String, TaxonProxy>();
    Logger logger = Logger.getLogger("AcgtRepoPlugin");
-
+   static final String ERROR_MESSAGE = "Error connecting to ACGT metadata repository.\n\nError message: ";
+   
    public boolean connect() {
 
       try {
@@ -41,11 +44,21 @@ public class AcgtRepoPlugin implements TaxonomyPlugin {
          return true;
       }
       catch (org.apache.axis2.AxisFault e) {
+         JOptionPane.showMessageDialog(null, getErrorMessage(e), "Connection error", JOptionPane.ERROR_MESSAGE);
          return false;
       }
       catch (org.eu_acgt.repo.client.ManagerException e) {
+         JOptionPane.showMessageDialog(null, getErrorMessage(e), "Connection error", JOptionPane.ERROR_MESSAGE);
          return false;
       }
+   }
+
+   String getErrorMessage(Throwable e) {
+      String message = e.getMessage();
+      while(e.getCause()!= null) {
+         e = e.getCause();
+      }
+      return ERROR_MESSAGE + message + "\nError cause: " + e.getClass().getSimpleName() + ": " + e.getMessage();
    }
 
    void addAllChildren( HashMap<String, TaxonProxy> taxa, CategoryTaxon parent) {

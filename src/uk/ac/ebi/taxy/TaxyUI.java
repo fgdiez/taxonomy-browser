@@ -2,8 +2,10 @@ package uk.ac.ebi.taxy;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
@@ -33,54 +35,49 @@ public class TaxyUI extends JFrame {
    /**
     * This UI controller
     */
-   private TaxyController _controller;
+   private TaxyController controller;
 
    /**
     * UI component for searching taxonomy elements.
     */
-   private SearchUI _searchUI;
+   private SearchUI searchUI;
 
    /**
     * UI component for displaying search results.
     */
-   private SearchResultUI _searchResultUI;
+   private SearchResultUI searchResultUI;
 
    /**
     * UI component for displaying the taxonomy tree.
     */
-   private TaxonomyTreeUI _taxaTreeUI;
+   private TaxonomyTreeUI taxaTreeUI;
 
    /**
     * UI component for displaying the complete information of a selected taxon.
     */
-   private TaxonMetadataUI _taxonUI;
+   private TaxonMetadataUI taxonUI;
 
    /**
     * Application's status bar.
     */
-   private StatusBarUI _statusBar;
+   private StatusBarUI statusBar;
 
    /**
     * UI components container.
     */
-   private JSplitPane _leftPane;
+   private JSplitPane leftPane;
 
    /**
     * UI components container.
     */
-   private JSplitPane _rightPane;
-
-   /**
-    * UI components container.
-    */
-   private JSplitPane _topPane;
+   private JSplitPane rightPane;
 
    /**
     * UI components container.
     */
 //   private JSplitPane _bottomPane;
 
-   static private final String _helpMessage = "usage: taxy [--help][--debug]";
+   static private final String HELP_MESSAGE = "usage: taxy [--help][--debug]";
 
    // /////////////////////////////
    // Public Static Operations
@@ -88,11 +85,10 @@ public class TaxyUI extends JFrame {
 
    /** Application's <code>main</code> function */
    public static void main( String[] args) {
-
       ArgumentParser argParser = new ArgumentParser(args);
 
       if (argParser.hasOption("--help")) {
-         System.out.println(_helpMessage);
+         System.out.println(HELP_MESSAGE);
          System.exit(1);
       }
 
@@ -121,21 +117,21 @@ public class TaxyUI extends JFrame {
     */
    public TaxyUI() {
 
-      _statusBar = new StatusBarUI("");
+      statusBar = new StatusBarUI("");
 
-      _taxonUI = new TaxonMetadataUI();
+      taxonUI = new TaxonMetadataUI();
 
-      _taxaTreeUI = new TaxonomyTreeUI(_taxonUI.getController(), _statusBar.getController());
+      taxaTreeUI = new TaxonomyTreeUI(taxonUI.getController(), statusBar.getController());
 
-      _searchResultUI = new SearchResultUI(_taxaTreeUI.getController(), _taxonUI.getController(), _statusBar.getController());
+      searchResultUI = new SearchResultUI(taxaTreeUI.getController(), taxonUI.getController(), statusBar.getController());
 
-      _controller = new TaxyController(this, _taxaTreeUI.getController());
+      controller = new TaxyController(this, taxaTreeUI.getController());
 
-      addWindowListener(new MyWindowListener(_controller));
+      addWindowListener(new MyWindowListener(controller));
 
-      setJMenuBar(new MenuBar(_controller));
+      setJMenuBar(new MenuBar(controller));
 
-      _searchUI = new SearchUI(_searchResultUI.getController(), _controller);
+      searchUI = new SearchUI(searchResultUI.getController(), controller);
 
       compose();
 
@@ -148,7 +144,7 @@ public class TaxyUI extends JFrame {
     */
    public TaxyController getController() {
 
-      return _controller;
+      return controller;
    }
 
    /**
@@ -157,10 +153,10 @@ public class TaxyUI extends JFrame {
     */
    public void setEnabled( boolean enabled) {
 
-      _searchUI.setEnabled(enabled);
-      _searchResultUI.setEnabled(enabled);
-      _taxaTreeUI.setEnabled(enabled);
-      _taxonUI.setEnabled(enabled);
+      searchUI.setEnabled(enabled);
+      searchResultUI.setEnabled(enabled);
+      taxaTreeUI.setEnabled(enabled);
+      taxonUI.setEnabled(enabled);
    }
 
    /**
@@ -182,38 +178,19 @@ public class TaxyUI extends JFrame {
    /** Clears the content of this UI */
    public void clearViews() {
 
-      _statusBar.clearView();
+      statusBar.clearView();
 
-      _taxonUI.clearView();
+      taxonUI.clearView();
 
-      _taxaTreeUI.clearView();
+      taxaTreeUI.clearView();
 
-      _searchResultUI.clearView();
+      searchResultUI.clearView();
 
-      _searchUI.clearView();
+      searchUI.clearView();
 
       Runtime.getRuntime().gc();
    }
 
-   // ///////////////////////////////////////
-   // Private static operations
-   // ///////////////////////////////////////
-
-//   private static void setMotifLookAndFeel() {
-//
-//      try {
-//         // set look & feel of the application
-//         javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-//      }
-//      catch (Exception e) {
-//         System.out.println("Warning: could not set the Motif Look & Feel."
-//                            + " Using default Look & Feel");
-//      }
-//   }
-
-   // ////////////////////////////////////////
-   // Private operations
-   // ////////////////////////////////////////
 
    /**
     * Calculates a dimension which is a factor of the screen size
@@ -261,22 +238,6 @@ public class TaxyUI extends JFrame {
     */
    private void compose() {
 
-      // panes' composition
-      _leftPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _searchResultUI, _taxaTreeUI);
-
-      _rightPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _leftPane, new JScrollPane(_taxonUI));
-
-      _topPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _searchUI, _rightPane);
-
-      /*
-       * _bottomPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT, _topPane,
-       * _statusBar.getContainer() );
-       */
-
-      getContentPane().add(_topPane);
-
-      // setMotifLookAndFeel();
-
       setTitle(WINDOW_TITLE);
 
       // dimension setting
@@ -287,23 +248,23 @@ public class TaxyUI extends JFrame {
       Point upperLeft = getCentreLocation();
       setLocation(upperLeft);
 
+      // panes' composition
+      leftPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, searchResultUI, taxaTreeUI);
+      rightPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, new JScrollPane(taxonUI));
+
       // lay out the dividers
       int leftDivider = (int) (dim.width * 0.2);
-
       int rightDivider = (int) (dim.width * 0.5);
 
-      // int bottomDivider = (int)(dim.width * 0.6);
+      leftPane.setDividerLocation(leftDivider);
+      rightPane.setDividerLocation(rightDivider);
 
-      _leftPane.setDividerLocation(leftDivider);
-
-      _rightPane.setDividerLocation(rightDivider);
-
-      // _bottomPane.setDividerLocation( bottomDivider );
-
-      getContentPane().add(_statusBar, BorderLayout.SOUTH);
+      getContentPane().add(rightPane, BorderLayout.CENTER);
+      getContentPane().add(searchUI, BorderLayout.NORTH);
+      getContentPane().add(statusBar, BorderLayout.SOUTH);
    }
 
-} // class BrowserUI
+} 
 
 /**
  * This class implements a listener for window closing events. It calls back the

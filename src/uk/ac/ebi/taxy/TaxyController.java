@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import uk.ac.ebi.util.Debug;
+import uk.ac.ebi.util.SwingWorker;
 
 /**
  * This class is the controller for <code>BrowserUI</code>.
@@ -14,23 +15,45 @@ import uk.ac.ebi.util.Debug;
  */
 public class TaxyController {
 
+   final class ConnectionWorker extends SwingWorker {
+
+      public Object construct() {
+         try {
+            logger.info("Worker construct entered");
+            setWaitCursor();
+            connectToSelectedPlugin();
+            return null;
+         } 
+         catch(Throwable e) {
+            logger.throwing("", "", e);
+            e.printStackTrace();
+            return null;
+         } 
+         finally {
+            setDefaultCursor();
+         }
+      }
+   }
+
    private Logger logger = Logger.getLogger("TaxyCore");
-   
+
    private TaxyUI _ui;
 
-   private TaxonomyPlugin _taxonomyPlugin;
+   private TaxonomyPlugin selectedPlugin;
 
    private TaxonomyTreeController _treeController;
+
+   private final ConnectionWorker connectionWorker;
 
    /**
     * Constructs a new controller that will operate over the specified
     * <code>BrowserUI</code> and <code>TaxonomyTreeController</code>.
     */
-   public TaxyController( TaxyUI ui, TaxonomyTreeController treeController) {
+   public TaxyController(TaxyUI ui, TaxonomyTreeController treeController) {
 
       _ui = ui;
-
       _treeController = treeController;
+      connectionWorker = new ConnectionWorker();
    }
 
    /**
@@ -39,7 +62,7 @@ public class TaxyController {
     */
    public TaxonomyPlugin getTaxonProvider() {
 
-      return _taxonomyPlugin;
+      return selectedPlugin;
    }
 
    /**
@@ -70,8 +93,7 @@ public class TaxyController {
 
             if (pluginClass != null) {
                pluginClasses.add(pluginClass);
-            }
-            else {
+            } else {
                Debug.TRACE("Plugin not found");
             }
 
@@ -79,8 +101,7 @@ public class TaxyController {
 
             if (pluginDescriptionClass != null) {
                pluginDescriptionClasses.add(pluginDescriptionClass);
-            }
-            else {
+            } else {
                Debug.TRACE("Plugin description not found");
             }
          }
@@ -92,13 +113,12 @@ public class TaxyController {
             return null;
          }
 
-         TaxonomyPlugin selectedPlugin = selectedPluginClass.newInstance();
+         TaxonomyPlugin plugin = selectedPluginClass.newInstance();
 
-         selectedPlugin.setParentFrame(_ui);
+         plugin.setParentFrame(_ui);
 
-         return selectedPlugin;
-      }
-      catch (Throwable ex) {
+         return plugin;
+      } catch (Throwable ex) {
          ex.printStackTrace();
          Debug.ERROR(ex.getMessage());
          return null;
@@ -112,32 +132,44 @@ public class TaxyController {
    public void connectToPlugin() {
 
       _ui.setEnabled(false);
-      TaxonomyPlugin plugin = resolvePlugins();
+      selectedPlugin = resolvePlugins();
 
-      if (plugin != null) {
-         Cursor currentCursor = _ui.getCursor();
-         _ui.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-         if (plugin.connect()) {
-            initializeViews(plugin);
-            _ui.setEnabled(true);
-         }
-         _ui.setCursor(currentCursor);
-      }
-      else {
+      if (selectedPlugin != null) {
+         connectToPluginInNewThread();
+      } else {
          logger.severe("Cannot resolve pluggins");
       }
    }
 
+   void connectToSelectedPlugin() {
+      Cursor currentCursor = _ui.getCursor();
+      _ui.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+      if (selectedPlugin.connect()) {
+         initializeViews(selectedPlugin);
+         _ui.setEnabled(true);
+      }
+      _ui.setCursor(currentCursor);
+   }
+
+   void connectToPluginInNewThread() {
+      connectionWorker.interrupt();
+      connectionWorker.start();
+   }
+
    public void disconnect() {
 
+      connectionWorker.interrupt();
+
       _ui.clearViews();
-      if (_taxonomyPlugin != null) {
-         _taxonomyPlugin.disconnect();
-         _taxonomyPlugin = null;
+      if (selectedPlugin != null) {
+         selectedPlugin.disconnect();
+         selectedPlugin = null;
       }
       _ui.setEnabled(false);
       System.gc();
+      System.gc();
+      System.runFinalization();
    }
 
    /**
@@ -145,8 +177,8 @@ public class TaxyController {
     */
    public void exit() {
 
-      if (_taxonomyPlugin != null) {
-         if (!_taxonomyPlugin.disconnect()) {
+      if (selectedPlugin != null) {
+         if (!selectedPlugin.disconnect()) {
             String title = "Connection Error";
             String message = "Could not disconnect from database";
 
@@ -160,13 +192,13 @@ public class TaxyController {
    }
 
    /** Shows a warning message centered in the applications window. */
-   public void showWarningDialog( String title, String message) {
+   public void showWarningDialog(String title, String message) {
 
       _ui.showWarningDialog(title, message);
    }
 
    /** Shows an informative message centered in the applications window. */
-   public void showInformativeDialog( String title, String message) {
+   public void showInformativeDialog(String title, String message) {
 
       _ui.showInformativeDialog(title, message);
    }
@@ -174,7 +206,7 @@ public class TaxyController {
    public void setWaitCursor() {
       _ui.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
    }
-   
+
    public void setDefaultCursor() {
       _ui.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
    }
@@ -183,10 +215,10 @@ public class TaxyController {
    // Private operations
    // ////////////////////////
 
-   private void initializeViews( TaxonomyPlugin plugin) {
+   private void initializeViews(TaxonomyPlugin plugin) {
 
       _ui.clearViews();
-      _taxonomyPlugin = plugin;
+      selectedPlugin = plugin;
 
       List<TaxonProxy> rootChildren = plugin.getRoot().getChildren();
 
@@ -202,7 +234,8 @@ public class TaxyController {
     * Selects one of the available implementations of
     * <code>TaxonomyPlugin</code>.
     */
-   private Class<TaxonomyPlugin> selectPlugin( ArrayList<Class<TaxonomyPlugin>> plugins, ArrayList<Class<PluginDescription>> pluginDescriptions) {
+   private Class<TaxonomyPlugin> selectPlugin(ArrayList<Class<TaxonomyPlugin>> plugins,
+         ArrayList<Class<PluginDescription>> pluginDescriptions) {
 
       PluginDialog dialog = new PluginDialog(_ui, plugins, pluginDescriptions);
       dialog.setVisible(true);
@@ -218,7 +251,7 @@ public class TaxyController {
 
       java.io.FileFilter filter = new java.io.FileFilter() {
 
-         public boolean accept( java.io.File f) {
+         public boolean accept(java.io.File f) {
 
             return f.getName().toLowerCase().endsWith(".jar");
          }

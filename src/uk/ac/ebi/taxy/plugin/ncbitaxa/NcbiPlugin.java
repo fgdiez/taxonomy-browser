@@ -66,10 +66,6 @@ public class NcbiPlugin implements TaxonomyPlugin {
 
    public boolean disconnect() {
       taxa = null;
-      System.gc();
-      System.gc();
-      System.gc();
-      System.runFinalization();
       return true;
    }
 

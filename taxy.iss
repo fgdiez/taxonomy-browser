@@ -3,15 +3,15 @@
 
 [Setup]
 AppName=Taxy
-AppVerName=Taxy v1.1.0-alpha4
+AppVerName=Taxy v1.1.0-beta1
 AppPublisher=Universidad de Malaga
 AppPublisherURL=http://www.bitlab.es
 AppSupportURL=http://www.bitlab.es
 AppUpdatesURL=http://www.bitlab.es
-DefaultDirName={pf}\Taxy1.1.0-alpha4
-DefaultGroupName=Taxy1.1.0-alpha4
+DefaultDirName={pf}\Taxy1.1.0-beta1
+DefaultGroupName=Taxy1.1.0-beta1
 AllowNoIcons=yes
-OutputBaseFilename=Taxy1.1.0-alpha4_setup
+OutputBaseFilename=Taxy1.1.0-beta1_setup
 Compression=lzma
 SolidCompression=yes
 SourceDir=release\
@@ -41,6 +41,7 @@ Source: "lib/stax-api-1.0.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/wstx-asl-3.2.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/BrowserLauncher2-12.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "plugins/acgtRepoPlugin.jar"; DestDir: "{app}/plugins"; Flags: ignoreversion
+Source: "plugins/ncbitaxaPlugin.jar"; DestDir: "{app}/plugins"; Flags: ignoreversion
 Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

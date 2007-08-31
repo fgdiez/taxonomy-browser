@@ -16,7 +16,6 @@ import javax.swing.SwingUtilities;
 public abstract class SwingWorker {
     private Object value;  // see getValue(), setValue()
 //    private Thread thread;
-
     /** 
      * Class to maintain reference to current worker thread
      * under separate synchronization control.
@@ -64,7 +63,10 @@ public abstract class SwingWorker {
     public void interrupt() {
         Thread t = threadVar.get();
         if (t != null) {
-            t.interrupt();
+           if(!t.isInterrupted()){
+              t.interrupt();
+           }
+           t.stop();
         }
         threadVar.clear();
     }
@@ -124,7 +126,7 @@ public abstract class SwingWorker {
      * Start the worker thread.
      */
     public void start() {
-        Thread t = threadVar.get();
+       Thread t = threadVar.get();
         if (t == null) {
            t = new Thread(doConstruct);
            threadVar = new ThreadVar(t);
