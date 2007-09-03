@@ -169,7 +169,9 @@ public class TaxyController {
       _ui.setEnabled(false);
       System.gc();
       System.gc();
+      System.gc();
       System.runFinalization();
+      System.gc();
    }
 
    /**
