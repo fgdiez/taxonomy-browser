@@ -1,6 +1,6 @@
 package uk.ac.ebi.util;
 
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 import javax.swing.event.TableModelListener;
 
@@ -12,7 +12,7 @@ import javax.swing.event.TableModelListener;
  */
 public class Table implements javax.swing.table.TableModel {
    
-   private static Logger logger = Logger.getLogger("TaxyCore");
+//   private static Logger logger = Logger.getLogger("TaxyCore");
    
    private String[][] rows;
    private String[] _columnNames;

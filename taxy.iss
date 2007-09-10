@@ -27,16 +27,16 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "taxy.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "lib/taxy.jar"; DestDir: "{app}\lib"; Flags: ignoreversion
-Source: "lib/repo-persistence-client.jar"; DestDir: "{app}\lib"; Flags: ignoreversion
-Source: "lib/axiom-api-1.2.4.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
-Source: "lib/axiom-impl-1.2.4.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
-Source: "lib/axis2-kernel-1.2.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
+Source: "lib/RepoPersistence-client.jar"; DestDir: "{app}\lib"; Flags: ignoreversion
+Source: "lib/axiom-api-1.2.5.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
+Source: "lib/axiom-impl-1.2.5.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
+Source: "lib/axis2-kernel-1.3.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/commons-codec-1.3.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/commons-httpclient-3.0.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/commons-logging-1.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
-Source: "lib/jibx-run-1.1.4.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
+Source: "lib/jibx-run-1.1.5.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/wsdl4j-1.6.2.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
-Source: "lib/XmlSchema-1.3.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
+Source: "lib/XmlSchema-1.3.2.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/stax-api-1.0.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/wstx-asl-3.2.1.jar"; DestDir: "{app}/lib"; Flags: ignoreversion
 Source: "lib/BrowserLauncher2-12.jar"; DestDir: "{app}/lib"; Flags: ignoreversion

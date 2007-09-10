@@ -27,6 +27,7 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
    protected TaxonomyPlugin _taxonomyProvider;
 
    private String _id;
+   protected TaxonProxy parent;
 
    static ImageIcon LEAF_ICON;
    static ImageIcon PARENT_ICON;
@@ -161,8 +162,14 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
    /**
     * Gets the parent of this taxon.
     */
-   public abstract TaxonProxy getParent();
+   public TaxonProxy getParent() {
+	   return parent;
+   }
 
+   public void setParent(TaxonProxy parent){
+	   this.parent = parent;
+   }
+   
    // {
    // if( ! _parentRetrieved )
    // {

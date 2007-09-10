@@ -100,8 +100,9 @@ public class TaxonMetadataUI extends JPanel {
          String name = propertyNames.get(i);
 
          TaxonProperty p = taxon.getProperty(name);
-
+         logger.info( "property name: " + name);
          String scalar = p.getScalar();
+         logger.info( "property value: " + scalar);
 
          // last row must have more weight than the others so that
          // it pushes them up

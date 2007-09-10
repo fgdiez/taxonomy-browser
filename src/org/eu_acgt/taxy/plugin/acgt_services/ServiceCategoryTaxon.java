@@ -8,7 +8,7 @@ import uk.ac.ebi.taxy.TaxonProperty;
 import uk.ac.ebi.taxy.TaxonProxy;
 import uk.ac.ebi.taxy.TaxonomyPlugin;
 
-public class CategoryTaxon extends TaxonProxy {
+public class ServiceCategoryTaxon extends TaxonProxy {
 
    static final String PROP_ONTOURI = "ID";
    static final String PROP_NAME = "Name";
@@ -24,10 +24,10 @@ public class CategoryTaxon extends TaxonProxy {
    }
 
    final FunctionalCategory cat;
-   final TaxonProxy parent;
+//   final TaxonProxy parent;
    ArrayList<TaxonProxy> children = new ArrayList<TaxonProxy>();
 
-   public CategoryTaxon( FunctionalCategory cat, TaxonProxy parent, String id, String name, TaxonomyPlugin taxonomyProvider) {
+   public ServiceCategoryTaxon( FunctionalCategory cat, TaxonProxy parent, String id, String name, TaxonomyPlugin taxonomyProvider) {
 
       super(id, name, taxonomyProvider);
       this.cat = cat;
@@ -40,7 +40,7 @@ public class CategoryTaxon extends TaxonProxy {
       if (cat == null) return null;
 
       if (propertyName.equals(PROP_ONTOURI)) {
-         return new TaxonProperty(PROP_ONTOURI, cat.getOntoUri());
+         return new TaxonProperty(PROP_ONTOURI, cat.getUriId());
       }
       else if (propertyName.equals(PROP_NAME)) {
          return new TaxonProperty(PROP_NAME, cat.getName());
@@ -65,11 +65,11 @@ public class CategoryTaxon extends TaxonProxy {
       return children;
    }
 
-   @Override
-   public TaxonProxy getParent() {
-
-      return parent;
-   }
+//   @Override
+//   public TaxonProxy getParent() {
+//
+//      return parent;
+//   }
 
    public void setChildren( ArrayList<TaxonProxy> children) {
 

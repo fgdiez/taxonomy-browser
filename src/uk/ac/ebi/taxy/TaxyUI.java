@@ -2,10 +2,8 @@ package uk.ac.ebi.taxy;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
@@ -23,7 +21,7 @@ import uk.ac.ebi.util.Debug;
 @SuppressWarnings("serial")
 public class TaxyUI extends JFrame {
 
-   public static final String VERSION = "v1.1.0-beta1";
+   public static final String VERSION = "v1.1.0-beta2";
    private static Logger logger = Logger.getLogger("TaxyCore");
    private static final String WINDOW_TITLE = "Taxy " + VERSION;
    

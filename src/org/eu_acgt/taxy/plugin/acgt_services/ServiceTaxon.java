@@ -53,7 +53,7 @@ public class ServiceTaxon extends TaxonProxy {
    }
 
    final Service svc;
-   final TaxonProxy parent;
+//   final TaxonProxy parent;
 
    public ServiceTaxon( Service svc, TaxonProxy parent, String id, String name, TaxonomyPlugin taxonomyProvider) {
 
@@ -69,7 +69,7 @@ public class ServiceTaxon extends TaxonProxy {
       if (svc == null) return null;
 
       if (propertyName.equals(PROP_LSID)) {
-         return new TaxonProperty(PROP_LSID, svc.getLsid());
+         return new TaxonProperty(PROP_LSID, svc.getUriId());
       }
       else if (propertyName.equals(PROP_NAME)) {
          return new TaxonProperty(PROP_NAME, svc.getName());
@@ -133,11 +133,11 @@ public class ServiceTaxon extends TaxonProxy {
       return null;
    }
 
-   @Override
-   public TaxonProxy getParent() {
-
-      return parent;
-   }
+//   @Override
+//   public TaxonProxy getParent() {
+//
+//      return parent;
+//   }
 
    @Override
    public boolean hasChildren() {
