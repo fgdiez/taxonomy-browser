@@ -2,6 +2,8 @@ package org.eu_acgt.taxy.plugin.acgt_services;
 
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 import org.eu_acgt.repo.model.FunctionalCategory;
 
 import uk.ac.ebi.taxy.TaxonProperty;
@@ -26,6 +28,7 @@ public class ServiceCategoryTaxon extends TaxonProxy {
    final FunctionalCategory cat;
 //   final TaxonProxy parent;
    ArrayList<TaxonProxy> children = new ArrayList<TaxonProxy>();
+   private static final ImageIcon ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("service_class.png"));
 
    public ServiceCategoryTaxon( FunctionalCategory cat, TaxonProxy parent, String id, String name, TaxonomyPlugin taxonomyProvider) {
 
@@ -65,12 +68,6 @@ public class ServiceCategoryTaxon extends TaxonProxy {
       return children;
    }
 
-//   @Override
-//   public TaxonProxy getParent() {
-//
-//      return parent;
-//   }
-
    public void setChildren( ArrayList<TaxonProxy> children) {
 
       this.children = children;
@@ -81,4 +78,14 @@ public class ServiceCategoryTaxon extends TaxonProxy {
 
       return children != null && children.size() > 0;
    }
+
+    @Override
+    public String getTaxonTitle() {
+    	return "Service Category Metadata";
+    }
+
+    public ImageIcon getIcon() {
+
+        return ICON;
+     }
 }

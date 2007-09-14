@@ -70,7 +70,8 @@ public class TaxonMetadataUI extends JPanel {
       Component container = createTaxonBag(taxon);
 
       removeAll();
-      add(container);
+      add(new JLabel(taxon.getTaxonTitle()), BorderLayout.NORTH);
+      add(container, BorderLayout.CENTER);
 
       revalidate();
       repaint();
@@ -101,6 +102,7 @@ public class TaxonMetadataUI extends JPanel {
 
          TaxonProperty p = taxon.getProperty(name);
          logger.info( "property name: " + name);
+         if(p == null) continue;
          String scalar = p.getScalar();
          logger.info( "property value: " + scalar);
 

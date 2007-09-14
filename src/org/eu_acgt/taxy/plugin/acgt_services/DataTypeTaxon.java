@@ -42,7 +42,7 @@ public class DataTypeTaxon extends TaxonProxy {
 		super( id, name, taxonomyProvider);
 		this.type = type;
 		this.parent = parent;
-		ICON = new ImageIcon( TaxonProxy.class.getClassLoader().getResource( "file.gif"));
+		ICON = new ImageIcon( TaxonProxy.class.getClassLoader().getResource( "datatype.png"));
 	}
 
 	@Override
@@ -102,5 +102,10 @@ public class DataTypeTaxon extends TaxonProxy {
 	public ImageIcon getIcon() {
 
 		return ICON;
+	}
+
+	@Override
+	public String getTaxonTitle() {
+		return "Data Type Metadata";
 	}
 }

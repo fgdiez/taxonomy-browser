@@ -2,12 +2,17 @@ package uk.ac.ebi.taxy.plugin.ncbitaxa;
 
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 import uk.ac.ebi.taxy.TaxonProperty;
 import uk.ac.ebi.taxy.TaxonProxy;
 
 public class NCBITaxonProxy extends TaxonProxy {
 
 	NcbiPlugin ncbiTaxonomy;
+
+	private static final ImageIcon BRANCH_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("catalog.png"));
+	private static final ImageIcon LEAF_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("species.png"));
 	
 	public NCBITaxonProxy(String id, String name, NcbiPlugin taxonomyProvider) {
 		super(id, name, taxonomyProvider);
@@ -41,4 +46,18 @@ public class NCBITaxonProxy extends TaxonProxy {
 		return getChildren().size() > 0;
 	}
 
+	@Override
+	public String getTaxonTitle() {
+		return "Taxon Details";
+	}
+
+   @Override
+   public ImageIcon getIcon() {
+	   if(hasChildren()) {
+		   return BRANCH_ICON;
+	   }
+	   else {
+		   return LEAF_ICON;
+	   }
+   }
 }

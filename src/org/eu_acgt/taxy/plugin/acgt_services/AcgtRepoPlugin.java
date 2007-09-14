@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -41,17 +42,9 @@ public class AcgtRepoPlugin implements TaxonomyPlugin {
 
 		try {
 			logger.info( "connecting..");
-			repo = new RepoPersistenceWSClient( "http://mango.ac.uma.es/axis2_devel/services/RepoPersistence");
-			FunctionalCategory rootServiceCat = repo
-					.retrieveFunctionalCategory( "urn:lsid:biomoby.org:servicetype:Service");
-			TypeTaxon rootDataTypeCat = repo.retrieveTypeTaxon( "urn:lsid:biomoby.org:objectclass:Object");
-			ServiceCategoryTaxon rootServiceCatTaxon = createCategoryTaxon( rootServiceCat, null);
-			DataTypeCategoryTaxon rootDataTypeCatTaxon = createCategoryTaxon( rootDataTypeCat, null);
-			taxa.put( rootServiceCatTaxon.getID(), rootServiceCatTaxon);
-			addAllChildren( taxa, rootServiceCatTaxon);
-			addAllChildren( taxa, rootDataTypeCatTaxon);
 			root = new TaxonProxy( "urn:lsid:eu_acgt.org:repo:root", "RepoRoot", this) {
 
+                ImageIcon ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("root.png"));
 				List< TaxonProxy> children = new ArrayList< TaxonProxy>( 2);
 
 				@Override
@@ -83,13 +76,43 @@ public class AcgtRepoPlugin implements TaxonomyPlugin {
 
 					return children.size() > 0;
 				}
+
+				@Override
+				public ImageIcon getIcon() {
+					return ICON;
+				}
+				
+				@Override
+				public String getTaxonTitle() {
+					return "Root Element";
+				}
 			};
-			root.getChildren().add(rootServiceCatTaxon);
-			root.getChildren().add(rootDataTypeCatTaxon);
-			rootServiceCatTaxon.setParent(root);
-			rootDataTypeCatTaxon.setParent(root);
-			
 			taxa.put( root.getID(), root);
+
+			
+			repo = new RepoPersistenceWSClient( "http://mango.ac.uma.es/axis2_devel/services/RepoPersistence");
+			FunctionalCategory rootServiceCat = 
+				repo.retrieveFunctionalCategory( "urn:lsid:biomoby.org:servicetype:Service");
+
+			ServiceCategoryTaxon rootServiceCatTaxon = createCategoryTaxon( rootServiceCat, null);
+			if(rootServiceCatTaxon != null) {
+				taxa.put( rootServiceCatTaxon.getID(), rootServiceCatTaxon);
+				addAllChildren( taxa, rootServiceCatTaxon);
+				root.getChildren().add(rootServiceCatTaxon);
+				rootServiceCatTaxon.setParent(root);
+			}
+			
+			TypeTaxon rootDataTypeCat = 
+				repo.retrieveTypeTaxon( "urn:lsid:biomoby.org:objectclass:Object");
+			
+			DataTypeCategoryTaxon rootDataTypeCatTaxon = createCategoryTaxon( rootDataTypeCat, null);
+			if(rootDataTypeCatTaxon != null) {
+				taxa.put( rootDataTypeCatTaxon.getID(), rootDataTypeCatTaxon);
+				addAllChildren( taxa, rootDataTypeCatTaxon);
+				root.getChildren().add(rootDataTypeCatTaxon);
+				rootDataTypeCatTaxon.setParent(root);
+			}
+			
 			logger.info( "Taxonomy elements: " + taxa.size());
 			
 			return true;

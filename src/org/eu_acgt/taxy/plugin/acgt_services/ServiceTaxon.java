@@ -2,6 +2,7 @@ package org.eu_acgt.taxy.plugin.acgt_services;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -53,6 +54,7 @@ public class ServiceTaxon extends TaxonProxy {
    }
 
    final Service svc;
+   List<TaxonProxy> children;
 //   final TaxonProxy parent;
 
    public ServiceTaxon( Service svc, TaxonProxy parent, String id, String name, TaxonomyPlugin taxonomyProvider) {
@@ -60,9 +62,20 @@ public class ServiceTaxon extends TaxonProxy {
       super(id, name, taxonomyProvider);
       this.svc = svc;
       this.parent = parent;
-      ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("file.gif"));
+      ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("service.png"));
+      children = createOperationTaxa(svc.getOperations());
    }
 
+   List<TaxonProxy> createOperationTaxa(List<Operation> operations) {
+	   List<TaxonProxy> operTaxa = new ArrayList<TaxonProxy>(operations.size());
+	   for(Iterator<Operation> operIter = operations.iterator(); operIter.hasNext();) {
+		   Operation oper = operIter.next();
+		   TaxonProxy taxon = new OperationTaxon(oper, this, "" + oper.getId(), oper.getName(), _taxonomyProvider);
+		   operTaxa.add( taxon);
+	   }
+	   return operTaxa;
+   }
+   
    @Override
    public TaxonProperty getProperty( String propertyName) {
 
@@ -128,9 +141,9 @@ public class ServiceTaxon extends TaxonProxy {
    }
 
    @Override
-   public ArrayList<TaxonProxy> getChildren() {
+   public List<TaxonProxy> getChildren() {
 
-      return null;
+      return children;
    }
 
 //   @Override
@@ -142,12 +155,17 @@ public class ServiceTaxon extends TaxonProxy {
    @Override
    public boolean hasChildren() {
 
-      return false;
+      return svc.getOperations().size() > 0;
    }
 
    @Override
    public ImageIcon getIcon() {
 
       return ICON;
+   }
+
+   @Override
+   public String getTaxonTitle() {
+   	return "Service Metadata";
    }
 }

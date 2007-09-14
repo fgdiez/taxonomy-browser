@@ -2,6 +2,8 @@ package org.eu_acgt.taxy.plugin.acgt_services;
 
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 import org.eu_acgt.repo.model.TypeTaxon;
 
 import uk.ac.ebi.taxy.TaxonProperty;
@@ -35,6 +37,7 @@ public class DataTypeCategoryTaxon extends TaxonProxy {
    final TypeTaxon cat;
 //   final TaxonProxy parent;
    ArrayList<TaxonProxy> children = new ArrayList<TaxonProxy>();
+   private static final ImageIcon ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("datatype_class.png"));
 
    public DataTypeCategoryTaxon( TypeTaxon cat, TaxonProxy parent, String id, String name, TaxonomyPlugin taxonomyProvider) {
 
@@ -92,5 +95,15 @@ public class DataTypeCategoryTaxon extends TaxonProxy {
    public boolean hasChildren() {
 
       return children != null && children.size() > 0;
+   }
+
+   public ImageIcon getIcon() {
+
+       return ICON;
+    }
+
+   @Override
+   public String getTaxonTitle() {
+   	return "Data Type Category Metadata";
    }
 }

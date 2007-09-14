@@ -3,15 +3,15 @@
 
 [Setup]
 AppName=Taxy
-AppVerName=Taxy v1.1.0-beta1
+AppVerName=Taxy v1.1.0-beta2
 AppPublisher=Universidad de Malaga
 AppPublisherURL=http://www.bitlab.es
 AppSupportURL=http://www.bitlab.es
 AppUpdatesURL=http://www.bitlab.es
-DefaultDirName={pf}\Taxy1.1.0-beta1
-DefaultGroupName=Taxy1.1.0-beta1
+DefaultDirName={pf}\Taxy1.1.0-beta2
+DefaultGroupName=Taxy1.1.0-beta2
 AllowNoIcons=yes
-OutputBaseFilename=Taxy1.1.0-beta1_setup
+OutputBaseFilename=Taxy1.1.0-beta2_setup
 Compression=lzma
 SolidCompression=yes
 SourceDir=release\

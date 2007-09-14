@@ -29,8 +29,9 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
    private String _id;
    protected TaxonProxy parent;
 
-   static ImageIcon LEAF_ICON;
-   static ImageIcon PARENT_ICON;
+   private static final ImageIcon LEAF_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("closedFolder.gif"));
+   private static final ImageIcon PARENT_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("openFolder.gif"));
+
    // ///////////////////////
    // parent attributes
 
@@ -80,8 +81,6 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
     */
    public TaxonProxy( String id, String name, TaxonomyPlugin taxonomyProvider) {
 
-      LEAF_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("closedFolder.gif"));
-      PARENT_ICON = new ImageIcon(TaxonProxy.class.getClassLoader().getResource("openFolder.gif"));
       _taxonomyProvider = taxonomyProvider;
 
       _id = id;
@@ -275,4 +274,6 @@ public abstract class TaxonProxy implements Comparable<TaxonProxy> {
       if (hasChildren()) return PARENT_ICON;
       return LEAF_ICON;
    }
+   
+   public abstract String getTaxonTitle();
 }

@@ -224,9 +224,13 @@ public class TaxyController {
 
       List<TaxonProxy> rootChildren = plugin.getRoot().getChildren();
 
-      TaxonProxy firstChild = rootChildren.get(0);
-
-      _treeController.showTaxon(firstChild);
+      if(rootChildren.size() > 0) {
+    	  TaxonProxy firstChild = rootChildren.get(0);
+          _treeController.showTaxon(firstChild);
+      }
+      else {
+    	  _treeController.showTaxon(plugin.getRoot());
+      }
       _treeController.clearSelection();
 
       // System.gc();
