@@ -29,8 +29,7 @@
 	<target name="launch" depends="release"
           description="Launch Taxy" >
 
-		<java classname="uk.ac.ebi.taxy.TaxyUI" fork="true" dir="${release}"
-            maxmemory="300M" >
+		<java classname="uk.ac.ebi.taxy.TaxyUI" fork="true" dir="${release}" >
 			<arg line="${args}" />
 			<classpath >
 				<fileset dir="${release}/lib"/>
