@@ -11,6 +11,8 @@
 	<property name="src"     location="src" />
 	<property name="build"   location="build" />
 	<property name="release" location="release" />
+	<property name="ncbi-dir" location="${basedir}/release/ncbi-data"/>
+	<property name="ncbi-file" location="${ncbi-dir}/taxdmp.zip"/>
 
 
 	<!-- project targets +++++++++++++++++++++++++++++++++++++++++++++-->
@@ -18,7 +20,20 @@
 	<target name="all"
       depends="release" />
 
-
+	<target name="check-ncbi-file">
+		<condition property="ncbi-file-not-exists">
+			<not>
+				<available file="${ncbi-file}" />
+			</not>
+		</condition>
+	</target>
+	
+	<target name="download-ncbi-data" depends="check-ncbi-file" if="ncbi-file-not-exists">
+		<mkdir dir="${ncbi-dir}" />
+		<get src="ftp://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdmp.zip" dest="${ncbi-dir}/taxdmp.zip" verbose="true"/>
+		<unzip src="${ncbi-file}" dest="${ncbi-dir}" overwrite="true" />
+	</target>
+	
 	<target name="clean" >
 		<delete quiet="true" dir="${build}"/>
 		<delete quiet="true" dir="${release}"/>
@@ -26,7 +41,7 @@
 	</target>
 
 
-	<target name="launch" depends="release"
+	<target name="launch" depends="release, download-ncbi-data"
           description="Launch Taxy" >
 
 		<java classname="uk.ac.ebi.taxy.TaxyUI" fork="true" dir="${release}" >
