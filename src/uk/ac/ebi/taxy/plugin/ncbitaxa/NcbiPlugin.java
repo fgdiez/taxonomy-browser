@@ -54,7 +54,7 @@ public class NcbiPlugin implements TaxonomyPlugin {
 
       Debug.ASSERT(selectedFile != null, "Null selected file");
 
-      taxa = new Hashtable<Integer, NcbiTaxon>(400000);
+      taxa = new Hashtable<Integer, NcbiTaxon>(2000000,1f);
       boolean success = parseFiles(selectedFile);
 
       if (success) {
@@ -210,8 +210,6 @@ public class NcbiPlugin implements TaxonomyPlugin {
    private boolean parseFiles(File path) {
 
       try {
-         taxa = new Hashtable<Integer, NcbiTaxon>();
-
          parseTaxaNodes(path);
 
          parseSynonyms(path);
@@ -244,7 +242,7 @@ public class NcbiPlugin implements TaxonomyPlugin {
 
       in.close();
 
-      Hashtable<Integer, ArrayList<NcbiTaxon>> childrenHash = new Hashtable<Integer, ArrayList<NcbiTaxon>>(taxa.size());
+      Hashtable<Integer, ArrayList<NcbiTaxon>> childrenHash = new Hashtable<Integer, ArrayList<NcbiTaxon>>(taxa.size(),1.0f);
 
       // for( int i = 0; i < taxa.size(); ++i) {
       Enumeration<NcbiTaxon> taxonIter = taxa.elements();
